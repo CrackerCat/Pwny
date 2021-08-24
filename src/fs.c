@@ -25,25 +25,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "print.h"
 #include "channel.h"
-
-static size_t get_file_size(char *filename)
-{
-    struct stat st;
-
-    stat(filename, &st);
-    return st.st_size;
-}
-
-static int is_file_exists(char *filename)
-{
-    return access(filename, F_OK) == 0;
-}
 
 void download(int channel, char *filename)
 {
-    if (is_file_exists(filename)) {
-        print_process("Downloading %s...", filename);
-    }
+    
 }
