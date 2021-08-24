@@ -26,11 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "print.h"
 #include "channel.h"
-
-#define LINE_DOWN "\033[4m"
-#define COLOR_RESET "\033[0m"
 
 static int is_equal(char *string1, char *string2)
 {
@@ -48,7 +44,6 @@ void console_interact(int channel)
 
     while (1) {
         memset(buffer, '\0', sizeof(buffer));
-        channel_send(channel, LINE_DOWN "hattle" COLOR_RESET " > ");
 
         channel_read(channel, buffer);
         format_buffer(buffer);
