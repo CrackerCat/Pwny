@@ -51,6 +51,6 @@ void console_interact(int channel)
         if (is_equal(buffer, "exit"))
             break;
         else
-            print_error("Unrecognized command!");
+            channel_send("UNRC");
     }
 }
