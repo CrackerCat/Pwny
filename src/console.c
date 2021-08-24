@@ -29,6 +29,9 @@
 #include "print.h"
 #include "channel.h"
 
+#define LINE_DOWN "\033[4m"
+#define COLOR_RESET "\033[0m"
+
 static int is_equal(char *string1, char *string2)
 {
     return strcmp(string1, string2) == 0;
