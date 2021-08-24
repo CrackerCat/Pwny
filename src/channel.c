@@ -30,8 +30,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "channel.h"
-
 int channel_open(char *host, int port)
 {
     int channel = 0;
