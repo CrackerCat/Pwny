@@ -47,7 +47,7 @@ void console_interact(int channel)
     while (1) {
         memset(buffer, '\0', sizeof(buffer));
 
-        channel_read(channel, buffer, 10);
+        channel_read(channel, buffer, 1024);
         format_buffer(buffer);
 
         if (is_equal(buffer, "exit"))
