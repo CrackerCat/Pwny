@@ -69,9 +69,20 @@ int channel_send(int channel, void *data)
     char *pdata = (char *)data;
     int datalen = strlen(pdata);
 
-    while (datalen > 0)
-    {
-        int num = send(channel, pdata, datalen, 0);
+    if (send(channel, pdata, datalen, 0) < 0)
+        return 0;
+
+    return 1;
+}
+
+int channel_sendall(int channel, void *data)
+{
+    char *pdata = (char *)data;
+    int datalen = strlen(pdata);
+
+    while (datalen > 0) {
+        int num = channel_send(channel, pdata);
+
         if (num < 0)
             return 0;
 
@@ -86,10 +97,20 @@ int channel_read(int channel, void *buffer, int bufferlen)
 {
     char *pbuffer = (char *)buffer;
 
-    while (bufferlen > 0)
-    {
-        int num = recv(channel, pbuffer, bufferlen, 0);
-        if (num < 0)
+    if (recv(channel, pbuffer, bufferlen, 0) < 0)
+        return 0;
+
+    return 1;
+}
+
+int channel_readall(int channel, void *buffer, int bufferlen)
+{
+    char *pbuffer = (char *)buffer;
+
+    while (bufferlen > 0) {
+        int num = channel_read(channel, pbuffer, bufferlen);
+
+        if (!channel_read(channel, pbuffer, bufferlen))
             return 0;
 
         pbuffer += num;
