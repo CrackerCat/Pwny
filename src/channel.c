@@ -154,7 +154,7 @@ void channel_download(int channel, char *filename)
     fseek (file, 0, SEEK_SET);
 
     char file_size[256];
-    itoa(size, file_size, 255);
+    sprintf(file_size, "%d", size);
 
     channel_sendall(channel, file_size);
     char buffer[size];
