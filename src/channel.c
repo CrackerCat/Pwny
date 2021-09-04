@@ -127,11 +127,10 @@ void channel_upload(int channel, char *filename)
     channel_read(channel, file_size, 256);
 
     FILE *received_file;
-    received_file = fopen(filename, "w");
+    received_file = fopen(filename, "wb");
 
-    if (received_file == NULL) {
+    if (received_file == NULL)
         channel_send(channel, "NOF");
-    }
 
     int size = atoi(file_size);
     char content[size];
@@ -140,4 +139,25 @@ void channel_upload(int channel, char *filename)
 
     fwrite(content, sizeof(char), size, received_file);
     fclose(received_file);
+}
+
+void channel_download(int channel, char *filename)
+{
+    FILE *file;
+    file = fopen(filename, "rb");
+
+    if (file == NULL)
+        channel_send(channel, "NOF");
+
+    fseek (file, 0, SEEK_END);
+    int size = ftell(file);
+    fseek (file, 0, SEEK_SET);
+
+    channel_sendall(channel, (char *)size);
+    char buffer[size];
+
+    fread(buffer, sizeof(char), length, file);
+    channel_sendall(channel, buffer);
+
+    fclose(file);
 }
