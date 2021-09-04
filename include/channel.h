@@ -35,7 +35,7 @@ int channel_sendall(int, void *);
 int channel_read(int, void *, int);
 int channel_readall(int, void *, int);
 
-int channel_upload(char *);
-int channel_download(char *);
+/*int channel_upload(char *);
+int channel_download(char *);*/
 
 #endif /* _CHANNEL_H_ */
