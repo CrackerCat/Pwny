@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
         if (channel < 0)
             return -1;
 
-        channel_send(channel, "\x90");
-        
+        channel_sendall(channel, "\x90");
+
         char buffer[1024] = {0};
         channel_read(channel, buffer, 1024);
         
