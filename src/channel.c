@@ -66,8 +66,8 @@ void channel_close(int channel)
 
 int channel_send(int channel, void *data)
 {
-    unsigned char *pdata = (unsigned char *)data;
-    int datalen = sizeof pdata;
+    char *pdata = (char *)data;
+    int datalen = strlen(pdata);
 
     while (datalen > 0)
     {
@@ -84,8 +84,8 @@ int channel_send(int channel, void *data)
 
 int channel_read(int channel, void *buffer)
 {
-    unsigned char *pbuffer = (unsigned char *)buffer;
-    int bufferlen = sizeof pbuffer;
+    char *pbuffer = (char *)buffer;
+    int bufferlen = strlen(pbuffer);
 
     while (bufferlen > 0)
     {
