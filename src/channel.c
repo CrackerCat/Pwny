@@ -22,6 +22,8 @@
 * SOFTWARE.
 */
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
