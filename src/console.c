@@ -53,6 +53,6 @@ void console_interact(int channel)
         if (is_equal(buffer, "exit"))
             break;
         else
-            channel_send("UNRC");
+            channel_send(channel, "UNRC");
     }
 }
