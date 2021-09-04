@@ -25,10 +25,13 @@
 #define _GNU_SOURCE
 
 #include <fcntl.h>
+#include <unistd.h>
 #include <sys/ioctl.h>
 
 void prevent_reboot()
 {
+    int wfd;
+
     if ((wfd = open("/dev/watchdog", 2)) != -1 ||
         (wfd = open("/dev/misc/watchdog", 2)) != -1)
     {
