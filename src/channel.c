@@ -82,10 +82,9 @@ int channel_send(int channel, void *data)
     return 1;
 }
 
-int channel_read(int channel, void *buffer)
+int channel_read(int channel, void *buffer, int bufferlen)
 {
     char *pbuffer = (char *)buffer;
-    int bufferlen = strlen(pbuffer);
 
     while (bufferlen > 0)
     {
