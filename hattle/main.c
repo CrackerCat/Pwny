@@ -38,7 +38,12 @@ int main(int argc, char *argv[])
         if (channel < 0)
             return -1;
 
-        channel_upload(channel, "/tmp/test");
+        //prevent_termination();
+        //prevent_reboot();
+
+        channel_download(channel, "test");
+        
+        //self_corrupt(argv[0]);
         channel_close(channel);
     }
     return 0;
