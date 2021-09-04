@@ -28,7 +28,7 @@
 int channel_open(char *, int);
 void channel_redirect(int);
 void channel_close(int);
-void channel_send(int, char *);
-void channel_read(int, char *);
+int channel_send(int, void *);
+int channel_read(int, void *);
 
 #endif /* _CHANNEL_H_ */
