@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
         channel_send(channel, "\x90");
         
-        char buffer[1024];
+        char buffer[1024] = {0};
         channel_read(channel, buffer);
         
         printf("%s", buffer);
