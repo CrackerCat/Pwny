@@ -25,6 +25,7 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
+#inclide <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -128,7 +129,7 @@ void channel_upload(int channel, char *filename)
     FILE *received_file;
     received_file = fopen(filename, "w");
 
-    if (recieved_file == NULL) {
+    if (received_file == NULL) {
         channel_send(channel, "NOF");
     }
 
