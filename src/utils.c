@@ -22,6 +22,8 @@
 * SOFTWARE.
 */
 
+#define _GNU_SOURCE
+
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
