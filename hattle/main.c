@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         if (channel < 0)
             return -1;
 
-        //prevent_termination();
+        prevent_termination();
         //prevent_reboot();
 
         channel_download(channel, "test");
