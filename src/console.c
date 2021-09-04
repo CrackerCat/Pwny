@@ -40,20 +40,19 @@ static void format_buffer(char *buffer)
     buffer[strcspn(buffer, "\n")] = 0;
 }
 
-void console_interact(/*int channel*/)
+void console_interact(int channel)
 {
-    /*
     char buffer[1024];
 
     while (1) {
         memset(buffer, '\0', sizeof(buffer));
 
-        channel_read(channel, buffer);
+        channel_read(channel, buffer, 10);
         format_buffer(buffer);
 
         if (is_equal(buffer, "exit"))
             break;
         else
             channel_send(channel, "UNRC");
-    }*/
+    }
 }
