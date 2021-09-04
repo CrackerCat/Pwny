@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
 
         channel_send(channel, "\x90");
         
-        char buffer[1024] = {0};
-        channel_read(channel, buffer);
+        char buffer[1024];
+        channel_read(channel, buffer, 1024);
         
         printf("%s", buffer);
         channel_close(channel);
