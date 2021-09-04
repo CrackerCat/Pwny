@@ -66,7 +66,7 @@ void channel_close(int channel)
 
 int channel_send(int channel, void *data)
 {
-    int datalen = sizeof data;
+    int datalen = sizeof(data) / sizeof(data[0]);
     unsigned char *pdata = (unsigned char *)data;
 
     while (datalen > 0)
