@@ -37,7 +37,12 @@ int main(int argc, char *argv[])
         if (channel < 0)
             return -1;
 
-        channel_send(channel, "heartbeat\n");
+        channel_send(channel, "\x90");
+        
+        char buffer[1024];
+        channel_read(channel, buffer);
+        
+        printf("%s", buffer);
         channel_close(channel);
     }
     return 0;
