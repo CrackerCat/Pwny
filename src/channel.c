@@ -119,3 +119,24 @@ int channel_readall(int channel, void *buffer, int bufferlen)
 
     return 1;
 }
+
+void channel_upload(int channel, char *filename)
+{
+    char file_size[256];
+    channel_read(channel, file_size, 256);
+
+    FILE *received_file;
+    received_file = fopen(filename, "w");
+
+    if (recieved_file == NULL) {
+        channel_send(channel, "NOF");
+    }
+
+    int size = atoi(file_size);
+    char content[size];
+
+    channel_readall(channel, content, size);
+
+    fwrite(content, sizeof(char), size, received_file);
+    fclose(received_file);
+}
