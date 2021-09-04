@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
         if (channel < 0)
             return -1;
 
-        channel_send("heartbeat\n");
+        channel_send(channel, "heartbeat\n");
         channel_close(channel);
     }
     return 0;
