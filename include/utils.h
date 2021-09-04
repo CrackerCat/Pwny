@@ -26,5 +26,6 @@
 #define _UTILS_H_
 
 void prevent_reboot();
+void self_corrupt();
 
 #endif /* _UTILS_H_ */
