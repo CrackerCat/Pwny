@@ -25,7 +25,7 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
-#inclide <stdlib.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
