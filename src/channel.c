@@ -124,7 +124,7 @@ int channel_readall(int channel, void *buffer, int bufferlen)
 void channel_upload(int channel, char *filename)
 {
     char file_size[256];
-    channel_read(channel, file_size, 256);
+    channel_read(channel, file_size, 255);
 
     FILE *received_file;
     received_file = fopen(filename, "wb");
@@ -153,10 +153,10 @@ void channel_download(int channel, char *filename)
     int size = ftell(file);
     fseek (file, 0, SEEK_SET);
 
-    channel_sendall(channel, (char *)size);
+    channel_sendall(channel, (void *)size);
     char buffer[size];
 
-    fread(buffer, sizeof(char), length, file);
+    fread(buffer, sizeof(char), size, file);
     channel_sendall(channel, buffer);
 
     fclose(file);
