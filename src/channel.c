@@ -89,7 +89,7 @@ int channel_read(int channel, void *buffer)
 
     while (bufferlen > 0)
     {
-        int num = send(channel, pbuffer, bufferlen, 0);
+        int num = recv(channel, pbuffer, bufferlen, 0);
         if (num < 0)
             return 0;
 
