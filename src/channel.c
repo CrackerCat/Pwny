@@ -33,7 +33,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "errno.h"
+#include "codes.h"
 
 int channel_open(char *host, int port)
 {
@@ -132,20 +132,20 @@ void channel_upload(int channel, char *filename)
 
     FILE *filehandle = fopen(filename, "wb");
     if (filehandle == NULL)
-        channel_sendall(channel, "FAIL");
+        channel_sendall(channel, TRANS_FAIL);
     else {
         if (filesize > 0) {
             char buffer[1024];
             do {
                 int num = min(filesize, sizeof(buffer));
                 if (!channel_read(channel, buffer, num))
-                    channel_sendall(channel, "FAIL");
+                    channel_sendall(channel, TRANS_FAIL);
                 else {
                     int offset = 0;
                     do {
                         size_t written = fwrite(&buffer[offset], 1, num-offset, filehandle);
                         if (written < 1)
-                            channel_sendall(channel, "FAIL");
+                            channel_sendall(channel, TRANS_FAIL);
                         else
                             offset += written;
                     } while (offset < num);
@@ -153,7 +153,7 @@ void channel_upload(int channel, char *filename)
                 }
             } while (filesize > 0);
         }
-        channel_sendall(channel, "OK");
+        channel_sendall(channel, TRANS_OK);
     }
 }
 
