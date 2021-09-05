@@ -35,9 +35,6 @@
 
 #include "codes.h"
 
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
 
 int channel_open(char *host, int port)
 {
@@ -100,7 +97,7 @@ int channel_sendall(int channel, void *data)
 int channel_sendsize(int channel, long data)
 {
     data = htonl(data);
-    return channel_sendall(channel, &value);
+    return channel_sendall(channel, &data);
 }
 
 int channel_read(int channel, void *buffer, int bufferlen)
