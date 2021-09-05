@@ -154,36 +154,12 @@ void channel_download(int channel, char *filename)
     if (file == NULL)
         channel_send(channel, TRANS_FAIL);
 
-    fseek (file, 0, SEEK_END);
-    int size = ftell(file);
-    fseek (file, 0, SEEK_SET);
-
-    char file_size[256];
-    sprintf(file_size, "%d", size);
-
-    channel_sendall(channel, file_size);
-    char buffer[size];
-
-    fread(buffer, size, 1, file);
-    channel_sendall(channel, buffer);
-
-    fclose(file);
-}
-
-void channel_download(int channel, char *filename)
-{
-    FILE *file;
-    file = fopen(filename, "rb");
-
-    if (file == NULL)
-        channel_send(channel, TRANS_FAIL);
-
     fseek(file, 0, SEEK_END);
     long size = ftell(file);
     rewind(file);
 
     char file_size[256];
-    sprintf(file_size, "%d", size);
+    sprintf(file_size, "%ld", size);
 
     channel_sendall(channel, file_size);
 
@@ -194,7 +170,7 @@ void channel_download(int channel, char *filename)
             num = fread(buffer, 1, num, file);
 
             channel_sendall(channel, buffer);
-            filesize -= num;
+            size -= num;
         }
         while (size > 0);
     }
