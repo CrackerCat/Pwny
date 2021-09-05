@@ -30,7 +30,7 @@ void channel_redirect(int);
 void channel_close(int);
 
 int channel_send(int, void *);
-int channel_sendall(int, void *);
+int channel_sendall(int, void *, int);
 
 int channel_read(int, void *, int);
 int channel_readall(int, void *, int);
