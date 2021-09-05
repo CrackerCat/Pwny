@@ -31,9 +31,11 @@ void channel_close(int);
 
 int channel_send(int, void *);
 int channel_sendall(int, void *);
+int channel_sendsize(int long);
 
 int channel_read(int, void *, int);
 int channel_readall(int, void *, int);
+int channel_readsize(int, long *);
 
 int channel_upload(int, char *);
 //int channel_download(int, char *);
