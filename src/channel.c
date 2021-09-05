@@ -33,6 +33,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "codes.h"
+
 int channel_open(char *host, int port)
 {
     int channel = 0;
@@ -130,7 +132,7 @@ void channel_upload(int channel, char *filename)
     received_file = fopen(filename, "wb");
 
     if (received_file == NULL)
-        channel_send(channel, "NOF");
+        channel_send(channel, TRANS_FAIL);
 
     int size = atoi(file_size);
     char content[size];
@@ -139,6 +141,8 @@ void channel_upload(int channel, char *filename)
 
     fwrite(content, sizeof(char), size, received_file);
     fclose(received_file);
+
+    channel_send(channel, TRANS_OK);
 }
 
 void channel_download(int channel, char *filename)
@@ -147,7 +151,7 @@ void channel_download(int channel, char *filename)
     file = fopen(filename, "rb");
 
     if (file == NULL)
-        channel_send(channel, "NOF");
+        channel_send(channel, TRANS_FAIL);
 
     fseek (file, 0, SEEK_END);
     int size = ftell(file);
