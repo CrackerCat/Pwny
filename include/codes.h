@@ -25,8 +25,8 @@
 #ifndef _CODES_H_
 #define _CODES_H_
 
-#define EXEC_ERROR  "\x01"
-#define TRANS_ERROR "\x02"
+#define EXEC_FAIL  "\x01"
+#define TRANS_FAIL "\x02"
 
 #define EXEC_OK  "\x11"
 #define TRANS_OK "\x12"
