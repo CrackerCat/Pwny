@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "codes.h"
 #include "channel.h"
 
 static int is_equal(char *string1, char *string2)
@@ -50,9 +51,11 @@ void console_interact(int channel)
         channel_read(channel, buffer, 1024);
         format_buffer(buffer);
 
-        if (is_equal(buffer, "exit"))
+        if (is_equal(buffer, "exit")) {
+            channel_send(channel, EXEC_OK);
             break;
-        else
-            channel_send(channel, "UNRC");
+        } else
+            channel_send(channel, EXEC_FAIL);
+        channel_send(channel, EXEC_OK);
     }
 }
