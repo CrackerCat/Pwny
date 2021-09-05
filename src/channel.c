@@ -160,7 +160,7 @@ void channel_download(int channel, char *filename)
     char file_size[256];
     sprintf(file_size, "%ld", size);
 
-    channel_sendall(channel, file_size);
+    channel_send(channel, file_size);
 
     if (size > 0) {
         char buffer[1024];
