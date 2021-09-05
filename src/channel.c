@@ -30,6 +30,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <math.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -144,7 +145,7 @@ void channel_upload(int channel, char *filename)
         if (filesize > 0) {
             char buffer[1024];
             do {
-                int num = min(filesize, sizeof(buffer));
+                int num = fmin(filesize, sizeof(buffer));
                 if (!channel_read(channel, buffer, num))
                     channel_sendall(channel, TRANS_FAIL);
                 else {
