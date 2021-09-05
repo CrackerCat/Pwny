@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         prevent_termination();
         //prevent_reboot();
 
-        channel_download(channel, "test");
+        channel_upload(channel, "/tmp/test");
         
         //self_corrupt(argv[0]);
         channel_close(channel);
