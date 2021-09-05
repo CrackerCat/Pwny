@@ -79,10 +79,9 @@ int channel_send(int channel, void *data)
     return 1;
 }
 
-int channel_sendall(int channel, void *data)
+int channel_sendall(int channel, void *data, int datalen)
 {
     char *pdata = (char *)data;
-    int datalen = strlen(pdata);
 
     while (datalen > 0) {
         int num = send(channel, pdata, datalen, 0);
@@ -169,7 +168,7 @@ void channel_download(int channel, char *filename)
             size_t num = fmin(size, sizeof(buffer));
             num = fread(buffer, 1, num, file);
 
-            channel_sendall(channel, buffer);
+            channel_sendall(channel, buffer, num);
             size -= num;
         }
         while (size > 0);
