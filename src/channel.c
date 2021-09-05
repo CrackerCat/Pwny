@@ -35,6 +35,10 @@
 
 #include "codes.h"
 
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
 int channel_open(char *host, int port)
 {
     int channel = 0;
@@ -134,7 +138,7 @@ int channel_readsize(int channel, long *buffer)
 void channel_upload(int channel, char *filename)
 {
     long filesize;
-    channel_readsize(channel, filesize);
+    channel_readsize(channel, &filesize);
 
     FILE *filehandle = fopen(filename, "wb");
     if (filehandle == NULL)
