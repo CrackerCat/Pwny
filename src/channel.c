@@ -33,6 +33,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "errno.h"
+
 int channel_open(char *host, int port)
 {
     int channel = 0;
@@ -129,7 +131,7 @@ void channel_upload(int channel, char *filename)
     *filesize = htonl(*filesize);
 
     FILE *filehandle = fopen(filename, "wb");
-    if (filehandle == NULL) {
+    if (filehandle == NULL)
         channel_sendall(channel, "FAIL");
     else {
         if (filesize > 0) {
@@ -155,7 +157,9 @@ void channel_upload(int channel, char *filename)
     }
 }
 
+/*
 void channel_download(int channel, char *filename)
 {
     
 }
+*/
