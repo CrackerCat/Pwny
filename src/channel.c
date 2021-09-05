@@ -123,44 +123,39 @@ int channel_readall(int channel, void *buffer, int bufferlen)
 
 void channel_upload(int channel, char *filename)
 {
-    char file_size[256];
-    channel_read(channel, file_size, 255);
+    long filesize;
 
-    FILE *received_file;
-    received_file = fopen(filename, "wb");
+    channel_read(channel, *filesize, sizeof(filesize));
+    *filesize = htonl(*filesize);
 
-    if (received_file == NULL)
-        channel_send(channel, "NOF");
-
-    int size = atoi(file_size);
-    char content[size];
-
-    channel_readall(channel, content, size);
-
-    fwrite(content, sizeof(char), size, received_file);
-    fclose(received_file);
+    FILE *filehandle = fopen(filename, "wb");
+    if (filehandle == NULL) {
+        channel_sendall(channel, "FAIL");
+    else {
+        if (filesize > 0) {
+            char buffer[1024];
+            do {
+                int num = min(filesize, sizeof(buffer));
+                if (!channel_read(channel, buffer, num))
+                    channel_sendall(channel, "FAIL");
+                else {
+                    int offset = 0;
+                    do {
+                        size_t written = fwrite(&buffer[offset], 1, num-offset, filehandle);
+                        if (written < 1)
+                            channel_sendall(channel, "FAIL");
+                        else
+                            offset += written;
+                    } while (offset < num);
+                    filesize -= num;
+                }
+            } while (filesize > 0);
+        }
+        channel_sendall(channel, "OK");
+    }
 }
 
 void channel_download(int channel, char *filename)
 {
-    FILE *file;
-    file = fopen(filename, "rb");
-
-    if (file == NULL)
-        channel_send(channel, "NOF");
-
-    fseek (file, 0, SEEK_END);
-    int size = ftell(file);
-    fseek (file, 0, SEEK_SET);
-
-    char file_size[256];
-    sprintf(file_size, "%d", size);
-
-    channel_sendall(channel, file_size);
-    char buffer[size];
-
-    fread(buffer, sizeof(char), size, file);
-    channel_sendall(channel, buffer);
-
-    fclose(file);
+    
 }
