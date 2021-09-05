@@ -163,7 +163,7 @@ void channel_download(int channel, char *filename)
     channel_sendall(channel, file_size);
     char buffer[size];
 
-    fread(buffer, sizeof(char), size, file);
+    fread(buffer, size, 1, file);
     channel_sendall(channel, buffer);
 
     fclose(file);
