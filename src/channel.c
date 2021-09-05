@@ -25,6 +25,7 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -167,4 +168,34 @@ void channel_download(int channel, char *filename)
     channel_sendall(channel, buffer);
 
     fclose(file);
+}
+
+void channel_download(int channel, char *filename)
+{
+    FILE *file;
+    file = fopen(filename, "rb");
+
+    if (file == NULL)
+        channel_send(channel, TRANS_FAIL);
+
+    fseek(file, 0, SEEK_END);
+    long size = ftell(file);
+    rewind(file);
+
+    char file_size[256];
+    sprintf(file_size, "%d", size);
+
+    channel_sendall(channel, file_size);
+
+    if (size > 0) {
+        char buffer[1024];
+        do {
+            size_t num = fmin(size, sizeof(buffer));
+            num = fread(buffer, 1, num, file);
+
+            channel_sendall(channel, buffer);
+            filesize -= num;
+        }
+        while (size > 0);
+    }
 }
