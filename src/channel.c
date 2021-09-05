@@ -30,12 +30,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include <math.h>
 #include <fcntl.h>
 #include <unistd.h>
-
-#include "codes.h"
-
 
 int channel_open(char *host, int port)
 {
@@ -74,7 +70,10 @@ int channel_send(int channel, void *data)
     char *pdata = (char *)data;
     int datalen = strlen(pdata);
 
-    return send(channel, pdata, datalen, 0);
+    if (send(channel, pdata, datalen, 0) < 1)
+        return 0;
+
+    return 1;
 }
 
 int channel_sendall(int channel, void *data)
@@ -95,16 +94,14 @@ int channel_sendall(int channel, void *data)
     return 1;
 }
 
-int channel_sendsize(int channel, long data)
-{
-    data = htonl(data);
-    return channel_sendall(channel, &data);
-}
-
 int channel_read(int channel, void *buffer, int bufferlen)
 {
     char *pbuffer = (char *)buffer;
-    return recv(channel, pbuffer, bufferlen, 0);
+
+    if (recv(channel, pbuffer, bufferlen, 0) < 1)
+        return 0;
+
+    return 1;
 }
 
 int channel_readall(int channel, void *buffer, int bufferlen)
@@ -124,50 +121,46 @@ int channel_readall(int channel, void *buffer, int bufferlen)
     return 1;
 }
 
-int channel_readsize(int channel, long *buffer)
-{
-    if (!channel_readall(channel, buffer, sizeof(buffer)))
-        return 0;
-
-    *buffer = ntohl(*buffer);
-    return 1;
-}
-
 void channel_upload(int channel, char *filename)
 {
-    long filesize;
-    channel_readsize(channel, &filesize);
+    char file_size[256];
+    channel_read(channel, file_size, 255);
 
-    FILE *filehandle = fopen(filename, "wb");
-    if (filehandle == NULL)
-        channel_sendall(channel, TRANS_FAIL);
-    else {
-        if (filesize > 0) {
-            char buffer[1024];
-            do {
-                int num = fmin(filesize, sizeof(buffer));
-                if (!channel_read(channel, buffer, num))
-                    channel_sendall(channel, TRANS_FAIL);
-                else {
-                    int offset = 0;
-                    do {
-                        size_t written = fwrite(&buffer[offset], 1, num-offset, filehandle);
-                        if (written < 1)
-                            channel_sendall(channel, TRANS_FAIL);
-                        else
-                            offset += written;
-                    } while (offset < num);
-                    filesize -= num;
-                }
-            } while (filesize > 0);
-        }
-        channel_sendall(channel, TRANS_OK);
-    }
+    FILE *received_file;
+    received_file = fopen(filename, "wb");
+
+    if (received_file == NULL)
+        channel_send(channel, "NOF");
+
+    int size = atoi(file_size);
+    char content[size];
+
+    channel_readall(channel, content, size);
+
+    fwrite(content, sizeof(char), size, received_file);
+    fclose(received_file);
 }
 
-/*
 void channel_download(int channel, char *filename)
 {
-    
+    FILE *file;
+    file = fopen(filename, "rb");
+
+    if (file == NULL)
+        channel_send(channel, "NOF");
+
+    fseek (file, 0, SEEK_END);
+    int size = ftell(file);
+    fseek (file, 0, SEEK_SET);
+
+    char file_size[256];
+    sprintf(file_size, "%d", size);
+
+    channel_sendall(channel, file_size);
+    char buffer[size];
+
+    fread(buffer, sizeof(char), size, file);
+    channel_sendall(channel, buffer);
+
+    fclose(file);
 }
-*/
