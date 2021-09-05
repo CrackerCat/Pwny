@@ -72,10 +72,7 @@ int channel_send(int channel, void *data)
     char *pdata = (char *)data;
     int datalen = strlen(pdata);
 
-    if (send(channel, pdata, datalen, 0) < 1)
-        return 0;
-
-    return 1;
+    return send(channel, pdata, datalen, 0);
 }
 
 int channel_sendall(int channel, void *data)
@@ -96,14 +93,16 @@ int channel_sendall(int channel, void *data)
     return 1;
 }
 
+int channel_sendsize(int channel, long data)
+{
+    data = htonl(data);
+    return channel_sendall(channel, &value);
+}
+
 int channel_read(int channel, void *buffer, int bufferlen)
 {
     char *pbuffer = (char *)buffer;
-
-    if (recv(channel, pbuffer, bufferlen, 0) < 1)
-        return 0;
-
-    return 1;
+    return recv(channel, pbuffer, bufferlen, 0);
 }
 
 int channel_readall(int channel, void *buffer, int bufferlen)
@@ -123,12 +122,19 @@ int channel_readall(int channel, void *buffer, int bufferlen)
     return 1;
 }
 
+int channel_readsize(int channel, long *buffer)
+{
+    if (!channel_readall(channel, buffer, sizeof(buffer)))
+        return 0;
+
+    *buffer = ntohl(*buffer);
+    return 1;
+}
+
 void channel_upload(int channel, char *filename)
 {
     long filesize;
-
-    channel_read(channel, *filesize, sizeof(filesize));
-    *filesize = htonl(*filesize);
+    channel_readsize(channel, filesize);
 
     FILE *filehandle = fopen(filename, "wb");
     if (filehandle == NULL)
