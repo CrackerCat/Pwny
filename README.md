@@ -5,7 +5,7 @@
         <img src="https://img.shields.io/badge/developer-EntySec-3572a5.svg">
     </a>
     <a href="https://github.com/EntySec/Hattle">
-        <img src="https://img.shields.io/badge/language-C-448eff.svg">
+        <img src="https://img.shields.io/badge/language-C-grey.svg">
     </a>
     <a href="https://github.com/EntySec/Hattle/stargazers">
         <img src="https://img.shields.io/github/stars/EntySec/Hattle?color=yellow">
