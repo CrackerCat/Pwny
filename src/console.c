@@ -42,8 +42,8 @@ void interact(int channel)
         char *input = read_channel(channel);
         JSONObject *json = parseJSON(input);
 
-        cmd = find_json(json, "cmd");
-        args = find_json(json, "args");
+        char *cmd = find_json(json, "cmd");
+        char *args = find_json(json, "args");
 
         if (is_equal(cmd, "exit"))
             break;
