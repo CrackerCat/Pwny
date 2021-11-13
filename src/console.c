@@ -38,7 +38,7 @@ static int is_equal(char *string1, char *string2)
 void interact_console(int channel)
 {
     while (1) {
-        char *input = channel_read(channel);
+        char *input = read_channel(channel);
 
         if (is_equal(input, "exit"))
             break;
