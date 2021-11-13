@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "codes.h"
 #include "channel.h"
 
 static int is_equal(char *string1, char *string2)
@@ -36,26 +35,12 @@ static int is_equal(char *string1, char *string2)
     return strcmp(string1, string2) == 0;
 }
 
-static void format_buffer(char *buffer)
+void interact_console(int channel)
 {
-    buffer[strcspn(buffer, "\n")] = 0;
-}
-
-void console_interact(int channel)
-{
-    char buffer[1024];
-
     while (1) {
-        memset(buffer, '\0', sizeof(buffer));
+        char *input = channel_read(channel);
 
-        channel_read(channel, buffer, 1024);
-        format_buffer(buffer);
-
-        if (is_equal(buffer, "exit")) {
-            channel_send(channel, EXEC_OK);
+        if (is_equal(input, "exit"))
             break;
-        } else
-            channel_send(channel, EXEC_FAIL);
-        channel_send(channel, EXEC_OK);
     }
 }
