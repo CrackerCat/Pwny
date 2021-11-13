@@ -42,7 +42,7 @@
 
 static void block_pipes(int s)
 {
-    NULL;
+    s = 0;
 }
 
 static int connect_target(char *host, char *port)
