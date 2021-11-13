@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "json.h"
 #include "channel.h"
 
 static int is_equal(char *string1, char *string2)
