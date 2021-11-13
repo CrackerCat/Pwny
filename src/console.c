@@ -39,8 +39,12 @@ void interact(int channel)
 {
     while (1) {
         char *input = read_channel(channel);
+        JSONObject *json = parseJSON(input);
 
-        if (is_equal(input, "exit"))
+        cmd = find_json(json, "cmd");
+        args = find_json(json, "args");
+
+        if (is_equal(cmd, "exit"))
             break;
     }
 }
