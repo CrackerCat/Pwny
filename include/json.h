@@ -76,4 +76,4 @@ void freeJSONFromMemory(JSONObject *);
 static int strNextOccurence(string, char);
 static JSONObject * _parseJSON(string, int *);
 
-#endif /* _JSON_H_
+#endif /* _JSON_H_ */
