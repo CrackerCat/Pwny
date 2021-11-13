@@ -35,7 +35,7 @@ static int is_equal(char *string1, char *string2)
     return strcmp(string1, string2) == 0;
 }
 
-void interact_console(int channel)
+void interact(int channel)
 {
     while (1) {
         char *input = read_channel(channel);
