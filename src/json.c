@@ -158,8 +158,14 @@ static JSONObject * _parseJSON(string str, int * offset)
 
 char *json_find(JSONObject *json, char *key)
 {
+    char *result = "";
+
     for (int i = 0; i < json->count; i++) {
-        if (strcmp(json->pairs[i].key, key) == 0)
-            return json->pairs[i].value->stringValue;
+        if (strcmp(json->pairs[i].key, key) == 0) {
+            result = json->pairs[i].value->stringValue;
+            break;
+        }
     }
+
+    return result;
 }
