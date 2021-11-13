@@ -156,7 +156,7 @@ void freeJSONFromMemory(JSONObject *obj)
     
 }
 
-char *json_find(JSONObject *json, char *key)
+char *find_json(JSONObject *json, char *key)
 {
     char *result = "";
 
