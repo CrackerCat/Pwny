@@ -25,17 +25,9 @@
 #ifndef _CHANNEL_H_
 #define _CHANNEL_H_
 
-int channel_open(char *, int);
-void channel_redirect(int);
-void channel_close(int);
-
-int channel_send(int, void *);
-int channel_sendall(int, void *, int);
-
-int channel_read(int, void *, int);
-int channel_readall(int, void *, int);
-
-int channel_upload(int, char *);
-int channel_download(int, char *);
+int open_channel(char *, int);
+void send_channel(int, char *);
+char *read_channel(int);
+void close_channel(int);
 
 #endif /* _CHANNEL_H_ */
