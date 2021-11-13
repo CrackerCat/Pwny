@@ -25,6 +25,6 @@
 #ifndef _CRYPTO_H_
 #define _CRYPTO_H_
 
-char *crypto(char *);
+char *decrypt(char *);
 
 #endif /* _CRYPTO_H_ */
