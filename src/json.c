@@ -24,42 +24,6 @@
 
 #include "json.h"
 
-JSONObject *parseJSON(string jsonString)
-{
-    int offset = 0;
-    JSONObject *tempObj = _parseJSON(jsonString, &offset);
-    return tempObj;
-}
-
-void freeJSONFromMemory(JSONObject *obj)
-{
-    int i;
-    
-    if (obj == NULL)
-        return;
-    
-    if (obj->pairs == NULL) {
-        free(obj);
-        return;
-    }
-    
-    for (i = 0; i < obj->count; i++) {
-        if (obj->pairs[i].key != NULL)
-            free(obj->pairs[i].key);
-        if (obj->pairs[i].value != NULL) {
-            switch (obj->pairs[i].type) {
-                case JSON_STRING:
-                    free(obj->pairs[i].value->stringValue);
-                    break;
-                case JSON_OBJECT:
-                    freeJSONFromMemory(obj->pairs[i].value->jsonObject);
-            }
-            free(obj->pairs[i].value);
-        }
-    }
-    
-}
-
 static int strNextOccurence(string str, char ch)
 {
     int pos = 0;
@@ -154,6 +118,42 @@ static JSONObject * _parseJSON(string str, int * offset)
         }
     }
     return obj;
+}
+
+JSONObject *parseJSON(string jsonString)
+{
+    int offset = 0;
+    JSONObject *tempObj = _parseJSON(jsonString, &offset);
+    return tempObj;
+}
+
+void freeJSONFromMemory(JSONObject *obj)
+{
+    int i;
+    
+    if (obj == NULL)
+        return;
+    
+    if (obj->pairs == NULL) {
+        free(obj);
+        return;
+    }
+    
+    for (i = 0; i < obj->count; i++) {
+        if (obj->pairs[i].key != NULL)
+            free(obj->pairs[i].key);
+        if (obj->pairs[i].value != NULL) {
+            switch (obj->pairs[i].type) {
+                case JSON_STRING:
+                    free(obj->pairs[i].value->stringValue);
+                    break;
+                case JSON_OBJECT:
+                    freeJSONFromMemory(obj->pairs[i].value->jsonObject);
+            }
+            free(obj->pairs[i].value);
+        }
+    }
+    
 }
 
 char *json_find(JSONObject *json, char *key)
