@@ -24,153 +24,48 @@
 
 #define _GNU_SOURCE
 
-#include <stdio.h>
-#include <math.h>
+#include <unistd.h>
 #include <stdlib.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
 #include <string.h>
-#include <fcntl.h>
-#include <unistd.h>
 
-#include "codes.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
-int channel_open(char *host, int port)
+int open_channel(char *host, int port)
 {
-    int channel = 0;
-    struct sockaddr_in serv_addr;
-    
-    if ((channel = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    int channel = socket(AF_INET, SOCK_STREAM, 0);
+    if (channel == -1)
         return -1;
-  
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port);
-  
-    if (inet_pton(AF_INET, host, &serv_addr.sin_addr) <= 0) 
+
+    struct sockaddr_in hint;
+    hint.sin_family = AF_INET;
+    hint.sin_port = htons(port);
+    inet_pton(AF_INET, host, &hint.sin_addr);
+
+    if (connect(channel, (struct sockaddr*)&hint, sizeof(hint)) == -1)
         return -1;
-  
-    if (connect(channel, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-        return -1;
-  
+
     return channel;
 }
 
-void channel_redirect(int channel)
+void send_channel(int channel, char *data)
 {
-    dup2(channel, STDOUT_FILENO);
-    dup2(channel, STDIN_FILENO);
-    dup2(channel, STDERR_FILENO);
+    send(channel, data, (int)strlen(data), 0);
 }
 
-void channel_close(int channel)
+char *read_channel(int channel)
+{
+    char buffer[2048] = "";
+    recv(channel, buffer, sizeof(buffer), 0);
+
+    char *buf = (char *)calloc(1, strlen(buffer) + 1);
+    strcpy(buf, buffer);
+
+    return buf;
+}
+
+void close_channel(int channel)
 {
     close(channel);
-}
-
-int channel_send(int channel, void *data)
-{
-    char *pdata = (char *)data;
-    int datalen = strlen(pdata);
-
-    if (send(channel, pdata, datalen, 0) < 1)
-        return 0;
-
-    return 1;
-}
-
-int channel_sendall(int channel, void *data, int datalen)
-{
-    char *pdata = (char *)data;
-
-    while (datalen > 0) {
-        int num = send(channel, pdata, datalen, 0);
-
-        if (num < 1)
-            return 0;
-
-        pdata += num;
-        datalen -= num;
-    }
-
-    return 1;
-}
-
-int channel_read(int channel, void *buffer, int bufferlen)
-{
-    char *pbuffer = (char *)buffer;
-
-    if (recv(channel, pbuffer, bufferlen, 0) < 1)
-        return 0;
-
-    return 1;
-}
-
-int channel_readall(int channel, void *buffer, int bufferlen)
-{
-    char *pbuffer = (char *)buffer;
-
-    while (bufferlen > 0) {
-        int num = recv(channel, pbuffer, bufferlen, 0);
-
-        if (num < 1)
-            return 0;
-
-        pbuffer += num;
-        bufferlen -= num;
-    }
-
-    return 1;
-}
-
-void channel_upload(int channel, char *filename)
-{
-    char file_size[256];
-    channel_read(channel, file_size, 255);
-
-    FILE *received_file;
-    received_file = fopen(filename, "wb");
-
-    if (received_file == NULL)
-        channel_send(channel, TRANS_FAIL);
-
-    int size = atoi(file_size);
-    char content[size];
-
-    channel_readall(channel, content, size);
-
-    fwrite(content, sizeof(char), size, received_file);
-    fclose(received_file);
-
-    channel_send(channel, TRANS_OK);
-}
-
-void channel_download(int channel, char *filename)
-{
-    FILE *file;
-    file = fopen(filename, "rb");
-
-    if (file == NULL)
-        channel_send(channel, TRANS_FAIL);
-
-    fseek(file, 0, SEEK_END);
-    long size = ftell(file);
-    rewind(file);
-
-    char file_size[256];
-    sprintf(file_size, "%ld", size);
-
-    channel_send(channel, file_size);
-
-    if (size > 0) {
-        char buffer[1024];
-        do {
-            size_t num = fmin(size, sizeof(buffer));
-            num = fread(buffer, 1, num, file);
-
-            channel_sendall(channel, buffer, num);
-            size -= num;
-        }
-        while (size > 0);
-    }
 }
