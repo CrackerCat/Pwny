@@ -25,7 +25,6 @@
 #define _GNU_SOURCE
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "json.h"
 #include "utils.h"
@@ -42,13 +41,10 @@ int main(int argc, char *argv[])
         // prevent_reboot();
 
         char *input = decrypt(argv[1]);
-        printf("Data: %s\n", input);
-
         JSONObject *json = parseJSON(input);
 
         char *host = find_json(json, "host");
         char *port = find_json(json, "port");
-        printf("Data: %s:%s\n", host, port);
 
         int channel = open_channel(host, atoi(port));
         if (channel < 0)
