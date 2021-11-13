@@ -1,5 +1,31 @@
+/*
+* MIT License
+*
+* Copyright (c) 2020-2021 EntySec
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*/
+
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -12,35 +38,21 @@ static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 static char *decoding_table = NULL;
 static int mod_table[] = {0, 2, 1};
 
-char *base64_encode(const unsigned char *data, size_t input_length, size_t *output_length) 
-{
-    *output_length = 4 * ((input_length + 2) / 3);
+static void build_decoding_table() {
 
-    char *encoded_data = malloc(*output_length);
-    if (encoded_data == NULL) return NULL;
+    decoding_table = malloc(256);
 
-    for (int i = 0, j = 0; i < input_length;) {
-
-        uint32_t octet_a = i < input_length ? (unsigned char)data[i++] : 0;
-        uint32_t octet_b = i < input_length ? (unsigned char)data[i++] : 0;
-        uint32_t octet_c = i < input_length ? (unsigned char)data[i++] : 0;
-
-        uint32_t triple = (octet_a << 0x10) + (octet_b << 0x08) + octet_c;
-
-        encoded_data[j++] = encoding_table[(triple >> 3 * 6) & 0x3F];
-        encoded_data[j++] = encoding_table[(triple >> 2 * 6) & 0x3F];
-        encoded_data[j++] = encoding_table[(triple >> 1 * 6) & 0x3F];
-        encoded_data[j++] = encoding_table[(triple >> 0 * 6) & 0x3F];
-    }
-
-    for (int i = 0; i < mod_table[input_length % 3]; i++)
-        encoded_data[*output_length - 1 - i] = '=';
-
-    return encoded_data;
+    for (int i = 0; i < 64; i++)
+        decoding_table[(unsigned char) encoding_table[i]] = i;
 }
 
-unsigned char *base64_decode(const char *data, size_t input_length, size_t *output_length)
-{
+static void base64_cleanup() {
+    free(decoding_table);
+}
+
+static char *base64_decode(const char *data,
+                             size_t input_length,
+                             size_t *output_length) {
 
     if (decoding_table == NULL) build_decoding_table();
 
@@ -70,18 +82,13 @@ unsigned char *base64_decode(const char *data, size_t input_length, size_t *outp
         if (j < *output_length) decoded_data[j++] = (triple >> 0 * 8) & 0xFF;
     }
 
-    return decoded_data;
+    return (char *)decoded_data;
 }
 
-
-static void build_decoding_table()
+char *decrypt(char *string)
 {
-    decoding_table = malloc(256);
+    size_t length = strlen(string);
+    char *dresult = base64_decode(string, length, &length);
 
-    for (int i = 0; i < 64; i++)
-        decoding_table[(unsigned char) encoding_table[i]] = i;
-}
-
-static void base64_cleanup() {
-    free(decoding_table);
+    return result;
 }
