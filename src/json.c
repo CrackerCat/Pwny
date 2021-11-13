@@ -115,7 +115,8 @@ static JSONObject * _parseJSON(string str, int * offset)
         } else if (*str == '}') {
             (*offset) += _offset + 1;
             return obj;
-        }
+        } else
+            return "";
     }
     return obj;
 }
