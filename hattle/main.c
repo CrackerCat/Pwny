@@ -25,6 +25,7 @@
 #define _GNU_SOURCE
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "json.h"
 #include "utils.h"
@@ -45,6 +46,8 @@ int main(int argc, char *argv[])
 
         char *host = find_json(json, "host");
         char *port = find_json(json, "port");
+        
+        freeJSONFromMemory(json);
 
         int channel = open_channel(host, atoi(port));
         if (channel < 0)
