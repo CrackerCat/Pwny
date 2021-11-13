@@ -45,6 +45,8 @@ void interact(int channel)
         char *cmd = find_json(json, "cmd");
         char *args = find_json(json, "args");
 
+        printf("cmd: %s args: %s\n", cmd, args);
+
         if (is_equal(cmd, "exit"))
             break;
     }
