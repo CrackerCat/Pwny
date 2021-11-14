@@ -25,9 +25,13 @@
 #
 
 import os
+import sys
 import json
 
-from hatsploit.utils.string import StringTools
+try:
+    from hatsploit.utils.string import StringTools
+except ImportError:
+    sys.exit("HatSploit is not installed!")
 
 
 class Pwny(StringTools):
