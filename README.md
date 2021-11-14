@@ -51,7 +51,16 @@ To encode Pwny command line arguments use `encode_args()`.
 from pwny import Pwny
 
 pwny = Pwny()
-args = pwny.encode_args('192.168.1.1', 8888)
+args = pwny.encode_args(8888, '127.0.0.1')
+```
+
+There are two types of Pwny - `reverse_tcp` and `bind_tcp`. To use `bind_tcp` instead of `reverse_tcp`, you should encode only `port` in `encode_args()`.
+
+```python3
+from pwny import Pwny
+
+pwny = Pwny()
+args = pwny.encode_args(8888)
 ```
 
 ## Adding Pwny payload
