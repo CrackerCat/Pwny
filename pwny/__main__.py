@@ -40,10 +40,15 @@ class Pwny(StringTools):
             return open(payload, 'rb').read()
         return None
 
-    def encode_args(self, connback_host, connback_port):
-        connback_data = json.dumps({
-            'host': connback_host,
-            'port': connback_port
-        })
+    def encode_args(self, port, host=None):
+        if not host:
+            data = json.dumps({
+                'port': str(connback_port)
+            })
+        else:
+            data = json.dumps({
+                'host': connback_host,
+                'port': str(connback_port)
+            })
 
-        return self.base64_string(connback_data)
+        return self.base64_string(data)
