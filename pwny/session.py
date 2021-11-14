@@ -33,7 +33,7 @@ from hatsploit.lib.commands import Commands
 
 from hatsploit.utils.telnet import TelnetClient
 
-class HatSploitSession(Session, TelnetClient):
+class PwnySession(Session, TelnetClient):
     config = Config()
     commands = Commands()
 
