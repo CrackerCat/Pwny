@@ -1,2 +1,0 @@
-recursive-include pwny/commands *
-recursive-include pwny/resources *
