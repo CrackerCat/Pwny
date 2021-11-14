@@ -28,13 +28,11 @@ import os
 import json
 
 from hatsploit.lib.session import Session
-from hatsploit.lib.config import Config
 from hatsploit.lib.commands import Commands
 
 from hatsploit.utils.telnet import TelnetClient
 
 class PwnySession(Session, TelnetClient):
-    config = Config()
     commands = Commands()
 
     pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/commands/'
