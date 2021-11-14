@@ -87,6 +87,7 @@ class PwnySession(Session, TelnetClient):
         self.print_information(f"Loaded {len(pwny)} commands.")
         self.print_empty()
 
+        self.print_information("We have this system now.")
         while True:
             commands = self.input_empty(self.prompt)
 
