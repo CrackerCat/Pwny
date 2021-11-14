@@ -27,13 +27,10 @@
 import os
 import json
 
-from hatsploit.lib.config import Config
 from hatsploit.utils.string import StringTools
 
 
 class Pwny(StringTools):
-    config = Config()
-
     pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/resources/'
 
     def get_payload(self, platform, arch):
