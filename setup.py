@@ -28,7 +28,7 @@ from setuptools import setup, find_packages
 
 setup(name='pwny',
       version='1.0.0',
-      description='',
+      description='Pwny is an implementation of an advanced native-code HatSploit payload, designed for portability, embeddability, and low resource utilization.',
       url='http://github.com/EntySec/Pwny',
       author='EntySec',
       author_email='entysec@gmail.com',
@@ -36,5 +36,8 @@ setup(name='pwny',
       python_requires='>=3.7.0',
       packages=find_packages(),
       include_package_data=True,
+      install_requires=[
+          'hatsploit @ git+http://github.com/EntySec/HatSploit'
+      ],
       zip_safe=False
 )
