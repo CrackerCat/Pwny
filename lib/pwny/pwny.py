@@ -34,7 +34,7 @@ from hatsploit.utils.string import StringTools
 class Pwny(StringTools):
     config = Config()
 
-    pwny = config.path_config['external_path'] + 'pwny/resources/'
+    pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/resources/'
 
     def get_payload(self, platform, arch):
         payload = pwny + platform + '/' + arch
