@@ -36,6 +36,7 @@ from hatsploit.utils.telnet import TelnetClient
 class PwnySession(Session, TelnetClient):
     commands = Commands()
 
+    prompt = '%linepwny%end > '
     pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/commands/'
 
     client = None
@@ -87,7 +88,7 @@ class PwnySession(Session, TelnetClient):
         self.print_empty()
 
         while True:
-            commands = self.input_empty('%linepwny%end > ')
+            commands = self.input_empty(self.prompt)
 
             if commands:
                 if commands[0] == 'quit':
