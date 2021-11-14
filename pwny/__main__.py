@@ -43,12 +43,12 @@ class Pwny(StringTools):
     def encode_args(self, port, host=None):
         if not host:
             data = json.dumps({
-                'port': str(connback_port)
+                'port': str(port)
             })
         else:
             data = json.dumps({
-                'host': connback_host,
-                'port': str(connback_port)
+                'host': host,
+                'port': str(port)
             })
 
         return self.base64_string(data)
