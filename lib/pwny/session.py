@@ -37,7 +37,7 @@ class HatSploitSession(Session, TelnetClient):
     config = Config()
     commands = Commands()
 
-    pwny = config.path_config['external_path'] + 'pwny/commands/'
+    pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/commands/'
 
     client = None
     terminated = False
