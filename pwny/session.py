@@ -27,10 +27,14 @@
 import os
 import json
 
-from hatsploit.lib.session import Session
-from hatsploit.lib.commands import Commands
+try:
+    from hatsploit.lib.session import Session
+    from hatsploit.lib.commands import Commands
 
-from hatsploit.utils.telnet import TelnetClient
+    from hatsploit.utils.telnet import TelnetClient
+except ImportError:
+    sys.exit("HatSploit is not installed!")
+
 
 class PwnySession(Session, TelnetClient):
     commands = Commands()
