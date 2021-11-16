@@ -24,6 +24,12 @@ pip3 install git+https://github.com/EntySec/HatSploit
 
 **NOTE:** Do not install Pwny directly from this repository, because it should be installed by HatSploit.
 
+## Supported targets
+
+* `Linux` - `x64` - `make linux`
+* `iPhoneOS` - `aarch64` - `make iphoneos`
+* `macOS` - `x64` - `make macos`
+
 ## Basic usage
 
 To use Pwny and build payloads you should import it to your source.
