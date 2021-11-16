@@ -22,11 +22,29 @@
 # SOFTWARE.
 #
 
+SRC = src
+
+MSG = echo
 Q = @
 
 .PHONY: all linux iphoneos
 
-all: linux iphoneos
+all: linux iphoneos macos
 
 linux:
-	
+	$(Q) $(MSG) [Building Pwny for Linux...]
+	$(Q) cd $(SRC)/linux
+	$(Q) make all
+	$(Q) $(MSG) [Done]
+
+iphoneos:
+	$(Q) $(MSG) [Building Pwny for iPhoneOS...]
+	$(Q) cd $(SRC)/iphoneos
+	$(Q) make all
+	$(Q) $(MSG) [Done]
+
+macos:
+	$(Q) $(MSG) [Building Pwny for macOS...]
+	$(Q) cd $(SRC)/macos
+	$(Q) make all
+	$(Q) $(MSG) [Done]
