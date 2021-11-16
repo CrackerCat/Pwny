@@ -40,7 +40,6 @@ class PwnySession(Session, TelnetClient):
     pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/commands/'
 
     client = None
-    terminated = False
 
     details = {
         'Platform': "",
@@ -54,7 +53,7 @@ class PwnySession(Session, TelnetClient):
         self.client.disconnect()
 
     def heartbeat(self):
-        return not terminated
+        return not self.client.terminated
 
     def send_command(self, command, output=False, timeout=10):
         command = command.split()
@@ -76,7 +75,7 @@ class PwnySession(Session, TelnetClient):
     def interact(self):
         self.print_empty()
 
-        if self.terminated:
+        if self.client.terminated:
             self.print_warning("Connection terminated.")
             return
 
@@ -105,6 +104,6 @@ class PwnySession(Session, TelnetClient):
                 self.commands.execute_custom_command(commands, pwny)
 
                 if commands[0] == 'exit':
-                    self.terminated = True
+                    self.client.terminated = True
                     self.print_warning("Connection terminated.")
                     return
