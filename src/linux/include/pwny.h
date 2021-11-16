@@ -25,6 +25,7 @@
 #ifndef _PWNY_H_
 #define _PWNY_H_
 
-void cmd_getpid();
+void cmd_getpid(int);
+void cmd_attack(int, char *);
 
 #endif /* _PWNY_H_ */
