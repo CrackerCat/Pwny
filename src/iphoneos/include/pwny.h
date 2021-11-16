@@ -39,6 +39,13 @@
 #import "channel.h"
 
 @interface Pwny : NSObject <AVAudioRecorderDelegate> {
+    @public
+
+    NSString *process = @"%bold%blue[*]%end ";
+    NSString *success = @"%bold%green[+]%end ";
+    NSString *error = @"%bold%red[-]%end ";
+    NSString *warning = @"%bold%yellow[!]%end ";
+    NSString *information = @"%bold%white[i]%end ";
 }
 
 CFArrayRef SBSCopyApplicationDisplayIdentifiers(bool onlyActive, bool debuggable);
