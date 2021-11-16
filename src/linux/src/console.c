@@ -32,11 +32,6 @@
 #include "channel.h"
 #include "commands.h"
 
-static int is_equal(char *string1, char *string2)
-{
-    return strcmp(string1, string2) == 0;
-}
-
 void interact(int channel)
 {
     while (1) {
@@ -47,7 +42,6 @@ void interact(int channel)
         char *args = find_json(json, "args");
 
         freeJSONFromMemory(json);
-        printf("cmd: %s args: %s\n", cmd, args);
 
         if (strcmp(cmd, "getpid") == 0)
             cmd_getpid(channel);
