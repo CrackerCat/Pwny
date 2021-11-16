@@ -30,6 +30,7 @@
 
 #include "json.h"
 #include "channel.h"
+#include "commands.h"
 
 static int is_equal(char *string1, char *string2)
 {
@@ -48,7 +49,9 @@ void interact(int channel)
         freeJSONFromMemory(json);
         printf("cmd: %s args: %s\n", cmd, args);
 
-        if (is_equal(cmd, "exit"))
+        if (strcmp(cmd, "getpid") == 0)
+            cmd_getpid(channel);
+        else if (strcmp(cmd, "exit") == 0)
             break;
     }
 }
