@@ -45,6 +45,8 @@ void interact(int channel)
 
         if (strcmp(cmd, "getpid") == 0)
             cmd_getpid(channel);
+        else if (strcmp(cmd, "attack") == 0)
+            cmd_attack(channel, args);
         else if (strcmp(cmd, "exit") == 0)
             break;
     }
