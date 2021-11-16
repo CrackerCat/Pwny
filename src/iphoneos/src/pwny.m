@@ -32,12 +32,6 @@
 
 int channelPipe;
 
-NSString *process = @"%bold%blue[*]%end ";
-NSString *success = @"%bold%green[+]%end ";
-NSString *error = @"%bold%red[-]%end ";
-NSString *warning = @"%bold%yellow[!]%end ";
-NSString *information = @"%bold%white[i]%end ";
-
 -(id)init:(int)currentChannelPipe {
     _thisUIDevice = [UIDevice currentDevice];
     [_thisUIDevice setBatteryMonitoringEnabled:YES];
