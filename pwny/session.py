@@ -53,6 +53,9 @@ class PwnySession(Session, TelnetClient):
     def close(self):
         self.client.disconnect()
 
+    def heartbeat(self):
+        return not terminated
+
     def send_command(self, command, output=False, timeout=10):
         command = command.split()
 
