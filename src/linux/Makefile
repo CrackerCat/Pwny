@@ -40,9 +40,9 @@ SOURCES := $(wildcard $(SOURCE)/*.c)
 OBJECTS := $(patsubst $(SOURCE)/%.c, $(BUILD)/%.o, $(SOURCES))
 LIBRARY = libpwny.a
 
-SRCS := $(wildcard pwny/*.c)
+SRCS := $(wildcard src/pwny/*.c)
 OBJS := $(patsubst %.c, %.o, $(SRCS))
-TARGET = pwny.bin
+TARGET = pwny
 
 Q = @
 
