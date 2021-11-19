@@ -62,7 +62,7 @@ clean:
 
 pwny: $(OBJS)
 	$(Q) $(MSG) [Compiling...]
-	$(Q) $(CC) $(OBJS) -o $(TARGET) -I$(INCLUDE) -L. -lhattle
+	$(Q) $(CC) $(OBJS) -o $(TARGET) -I$(INCLUDE) -L. -lpwny
 	$(Q) $(MSG) [Done]
 
 	$(Q) $(MSG) [Stripping...]
