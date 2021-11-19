@@ -56,8 +56,6 @@ class PwnySession(Session, TelnetClient):
         return not self.client.terminated
 
     def send_command(self, command, output=False, timeout=10):
-        command = command.split()
-
         cmd = command[0]
         args = ""
 
