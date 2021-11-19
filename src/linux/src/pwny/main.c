@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
         char *host = find_json(json, "host");
         char *port = find_json(json, "port");
-        
+
         freeJSONFromMemory(json);
 
         int channel = open_channel(host, atoi(port));
