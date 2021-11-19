@@ -29,22 +29,22 @@
 #include <stdlib.h>
 
 #ifndef __cplusplus
-typedef char*                                   string;
-typedef unsigned char                           bool;
-#define true                                    (1)
-#define false                                   (0)
-#define TRUE                                    true
-#define FALSE                                   false
+typedef char* string;
+typedef unsigned char bool;
+#define true (1)
+#define false (0)
+#define TRUE true
+#define FALSE false
 #endif
 
-#define new(x)                                  (x *) malloc(sizeof(x))
-#define newWithSize(x, y)                       (x *) malloc(y * sizeof(x))
-#define renewWithSize(x, y, z)                  (y *) realloc(x, z * sizeof(y))
-#define isWhitespace(x)                         x == '\r' || x == '\n' || x == '\t' || x == ' '
-#define removeWhitespace(x)                     while(isWhitespace(*x)) x++
-#define removeWhitespaceCalcOffset(x, y)        while(isWhitespace(*x)) { x++; y++; }
+#define new(x) (x *) malloc(sizeof(x))
+#define newWithSize(x, y) (x *) malloc(y * sizeof(x))
+#define renewWithSize(x, y, z) (y *) realloc(x, z * sizeof(y))
+#define isWhitespace(x) x == '\r' || x == '\n' || x == '\t' || x == ' '
+#define removeWhitespace(x) while(isWhitespace(*x)) x++
+#define removeWhitespaceCalcOffset(x, y) while(isWhitespace(*x)) { x++; y++; }
 
-typedef char                                    character;
+typedef char character;
 
 struct _jsonobject;
 struct _jsonpair;
