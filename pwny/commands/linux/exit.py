@@ -21,4 +21,4 @@ class HatSploitCommand(Command):
     }
 
     def run(self, argc, argv):
-        self.session.send_command(' '.join(argv))
+        self.session.send_command(argv)
