@@ -46,8 +46,8 @@ void cmd_attack(int channel, char *args)
 {
     JSONObject *json = parseJSON(args);
 
-    char *host = find_json(args, "host");
-    char *port = find_json(args, "port");
+    char *host = find_json(json, "host");
+    char *port = find_json(json, "port");
 
     freeJSONFromMemory(json);
     attack(host, port);
