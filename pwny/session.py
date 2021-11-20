@@ -59,10 +59,7 @@ class PwnySession(Session, TelnetClient):
         commands = self.format_commands(command)
 
         if len(commands) > 1:
-            if isinstance(commands[1], dict):
-                args = commands[1]
-            else:
-                args = ' '.join(commands[1:])
+            args = ' '.join(commands[1:])
         else:
             args = None
 
