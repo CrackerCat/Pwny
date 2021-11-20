@@ -60,7 +60,10 @@ class PwnySession(Session, TelnetClient):
         args = ""
 
         if len(command) > 1:
-            args = ' '.join(command[1:])
+            if isinstance(command[1], dict):
+                args = command[1]
+            else:
+                args = ' '.join(command[1:])
 
         command_data = json.dumps({
             'cmd': cmd,
