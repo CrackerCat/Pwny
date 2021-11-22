@@ -22,10 +22,10 @@
 * SOFTWARE.
 */
 
-#import "pwny.h"
+#import "commands.h"
 #import "channel.h"
 
-@implementation Pwny
+@implementation Commands
 
 @synthesize channel;
 @synthesize fileManager;
