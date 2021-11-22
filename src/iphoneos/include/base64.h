@@ -24,9 +24,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Crypto : NSObject {
+@interface Base64 : NSObject {
 }
 
--(NSString *)decrypt:(NSString *)string;
+-(NSString *)base64_decode:(NSString *)string;
 
 @end
