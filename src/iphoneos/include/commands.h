@@ -38,7 +38,7 @@
 
 #import "channel.h"
 
-@interface Pwny : NSObject <AVAudioRecorderDelegate> {
+@interface Commands : NSObject <AVAudioRecorderDelegate> {
     @public
 
     NSString *process = @"%bold%blue[*]%end ";
