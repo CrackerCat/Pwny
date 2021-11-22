@@ -81,7 +81,7 @@ static char *base64_decode(const unsigned char *data, size_t input_length, size_
     return (char *)decoded_data;
 }
 
-char *base64_decode(char *string)
+char *decode_base64(char *string)
 {
     size_t length = strlen(string);
     char *result = base64_decode((unsigned char *)string, length, &length);
