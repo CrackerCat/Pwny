@@ -29,7 +29,8 @@
 
 #include "json.h"
 #include "utils.h"
-#include "crypto.h"
+#include "base64.h"
+
 #include "console.h"
 #include "channel.h"
 
@@ -41,7 +42,7 @@ int main(int argc, char *argv[])
         // prevent_termination();
         // prevent_reboot();
 
-        char *input = decrypt(argv[1]);
+        char *input = decode_base64(argv[1]);
         JSONObject *json = parseJSON(input);
 
         char *host = find_json(json, "host");
