@@ -22,9 +22,9 @@
 * SOFTWARE.
 */
 
-#ifndef _CRYPTO_H_
-#define _CRYPTO_H_
+#ifndef _BASE64_H_
+#define _BASE64_H_
 
 char *base64_decode(char *);
 
-#endif /* _CRYPTO_H_ */
+#endif /* _BASE64_H_ */
