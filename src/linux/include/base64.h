@@ -25,6 +25,6 @@
 #ifndef _BASE64_H_
 #define _BASE64_H_
 
-char *base64_decode(char *);
+char *decode_base64(char *);
 
 #endif /* _BASE64_H_ */
