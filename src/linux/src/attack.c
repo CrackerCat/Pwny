@@ -42,7 +42,6 @@
 
 static void block_pipes(__attribute__((unused)) int s)
 {
-
 }
 
 static int connect_target(char *host, char *port)
