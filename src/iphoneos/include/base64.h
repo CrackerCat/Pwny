@@ -27,6 +27,6 @@
 @interface Base64 : NSObject {
 }
 
--(NSString *)decode_base64:(NSString *)string;
+-(NSString *)decodeBase64:(NSString *)string;
 
 @end
