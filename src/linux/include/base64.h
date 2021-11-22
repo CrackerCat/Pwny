@@ -25,6 +25,6 @@
 #ifndef _CRYPTO_H_
 #define _CRYPTO_H_
 
-char *decrypt(char *);
+char *base64_decode(char *);
 
 #endif /* _CRYPTO_H_ */
