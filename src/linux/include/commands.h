@@ -22,10 +22,10 @@
 * SOFTWARE.
 */
 
-#ifndef _PWNY_H_
-#define _PWNY_H_
+#ifndef _COMMANDS_H_
+#define _COMMANDS_H_
 
 void cmd_getpid(int);
 void cmd_attack(int, char *);
 
-#endif /* _PWNY_H_ */
+#endif /* _COMMANDS_H_ */
