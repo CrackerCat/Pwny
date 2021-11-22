@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-#import "crypto.h"
+#import "base64.h"
 #import "pwny.h"
 
 #import "channel.h"
@@ -83,10 +83,10 @@ int main(int argc, const char *argv[]) {
         if (argc > 1) {
             [utils redirectToNull];
 
-            Crypto *crypto = [[Crypto alloc] init];
+            Base64 *base64 = [[Base64 alloc] init];
 
             NSString *inputData = [NSString stringWithFormat:@"%s", argv[1]];
-            NSString *decodedData = [crypto decrypt:inputData];
+            NSString *decodedData = [base64 decodeBase64:inputData];
 
             NSData *jsonData = [decodedData dataUsingEncoding:NSUTF8StringEncoding];
             NSMutableDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
