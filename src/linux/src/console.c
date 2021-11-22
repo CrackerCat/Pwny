@@ -30,7 +30,7 @@
 
 #include "json.h"
 #include "channel.h"
-#include "pwny.h"
+#include "commands.h"
 
 void interact(int channel)
 {
