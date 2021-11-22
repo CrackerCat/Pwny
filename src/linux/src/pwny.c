@@ -36,13 +36,16 @@
 void cmd_getpid(int channel)
 {
     int pid_number = getpid();
+
     char *pid;
     int pid_length = 0;
 
     pid_length = snprintf((char *)NULL, 0, "%d", pid_number);
     pid = (char *)calloc(pid_length+1, sizeof(char));
+
     sprintf(pid, "%d", pid_number);
     send_channel(channel, pid);
+
     free(pid);
 }
 
