@@ -40,9 +40,9 @@
 #define CONNECTIONS 8
 #define THREADS 48
 
-static void block_pipes(int s)
+static void block_pipes(__attribute__((unused)) int s)
 {
-    s = 0;
+
 }
 
 static int connect_target(char *host, char *port)
