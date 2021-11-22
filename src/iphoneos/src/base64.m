@@ -22,11 +22,11 @@
 * SOFTWARE.
 */
 
-#import "crypto.h"
+#import "base64.h"
 
-@implementation Crypto
+@implementation Base64
 
--(NSString *)decrypt:(NSString *)string {
+-(NSString *)decodeBase64:(NSString *)string {
     NSData* resultData = [[NSData alloc] initWithBase64EncodedString:string options:0];
     NSString *result = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
 
