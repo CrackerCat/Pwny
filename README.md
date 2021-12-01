@@ -26,9 +26,11 @@ pip3 install git+https://github.com/EntySec/HatSploit
 
 ## Supported targets
 
-* `Linux` - `x64` - `make linux`
+* `Linux` - `x64`/`x86`/`armle`/`aarch64`/`mipsle`/`mipsbe` - `make linux`
 * `iPhoneOS` - `aarch64` - `make iphoneos`
 * `macOS` - `x64` - `make macos`
+
+**NOTE:** Pwny Makefile does not contain cross-compiler!
 
 ## Basic usage
 
