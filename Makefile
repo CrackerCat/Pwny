@@ -27,9 +27,9 @@ SRC = src
 MSG = echo
 Q = @
 
-.PHONY: all linux iphoneos
+.PHONY: all linux apple_ios
 
-all: linux iphoneos macos
+all: linux apple_ios macos
 
 linux:
 	$(Q) $(MSG) [Building Pwny for Linux...]
@@ -38,8 +38,8 @@ linux:
 	$(Q) $(MSG) [Done]
 
 iphoneos:
-	$(Q) $(MSG) [Building Pwny for iPhoneOS...]
-	$(Q) cd $(SRC)/iphoneos
+	$(Q) $(MSG) [Building Pwny for iOS...]
+	$(Q) cd $(SRC)/apple_ios
 	$(Q) make all
 	$(Q) $(MSG) [Done]
 
