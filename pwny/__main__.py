@@ -34,7 +34,7 @@ class Pwny(StringTools):
     pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/resources/'
 
     def get_payload(self, platform, arch):
-        payload = pwny + platform + '/' + arch
+        payload = self.pwny + platform + '/' + arch
 
         if os.path.exists(payload):
             return open(payload, 'rb').read()
