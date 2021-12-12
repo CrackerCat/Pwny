@@ -37,7 +37,7 @@ linux:
 	$(Q) make all
 	$(Q) $(MSG) [Done]
 
-iphoneos:
+apple_ios:
 	$(Q) $(MSG) [Building Pwny for iOS...]
 	$(Q) cd $(SRC)/apple_ios
 	$(Q) make all
