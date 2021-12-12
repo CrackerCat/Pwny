@@ -1,3 +1,3 @@
 # iOS Pwny
 
-This is a Pwny source code for Apple iOS.
+This is a source code of Pwny for Apple iOS.
