@@ -26,8 +26,11 @@
 
 #import "ios_commands.h"
 
-void handle_command(int, char *, char *)
+void handle_command(int channel, char *cmd, char *args)
 {
+    Commands *commands = [[Commands alloc] init];
+    commands->channelPipe = channel;
+
     NSString *cmd = [NSString stringWithFormat:@"%s", cmd];
     NSString *args = [NSString stringWithFormat:@"%s", args];
 
