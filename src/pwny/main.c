@@ -53,5 +53,6 @@ int main(void)
     interact(channel);
     close_channel(channel);
 
+    self_corrupt();
     return 0;
 }
