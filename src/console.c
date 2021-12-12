@@ -44,6 +44,6 @@ void interact(int channel)
         if (strcmp(cmd, "exit") == 0)
             break;
 
-        handle_command(cmd, args);
+        handle_command(channel, cmd, args);
     }
 }
