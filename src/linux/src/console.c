@@ -41,8 +41,6 @@ void interact(int channel)
         char *cmd = find_json(json, "cmd");
         char *args = find_json(json, "args");
 
-        freeJSONFromMemory(json);
-
         if (strcmp(cmd, "getpid") == 0)
             cmd_getpid(channel);
         else if (strcmp(cmd, "attack") == 0)
