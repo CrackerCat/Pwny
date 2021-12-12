@@ -26,7 +26,6 @@
 #define _UTILS_H_
 
 void prevent_termination();
-void prevent_reboot();
 void self_corrupt(char *);
 
 #endif /* _UTILS_H_ */
