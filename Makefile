@@ -23,62 +23,59 @@
 #
 
 AR = ar
-CC = gcc
+CC = clang
 STRIP = strip
 
-MKDIR = mkdir
-MSG = echo
-REMOVE = rm
+PWNY = pwny
+LIBPWNY = libpwny.a
 
+IOS_SYSROOT = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
+
+SRC = src
 INCLUDE = include
-SOURCE = src
-BUILD = build
 
-CFLAGS = -std=c99 -Wall -Wextra -pedantic-errors -Werror -I$(INCLUDE) -g
+STDAPI = $(SRC)/stdapi
 
-SOURCES := $(wildcard $(SOURCE)/*.c)
-OBJECTS := $(patsubst $(SOURCE)/%.c, $(BUILD)/%.o, $(SOURCES))
-LIBRARY = libpwny.a
+STDAPI_SRC = $(STDAPI)/src
+STDAPI_INCLUDE = $(STDAPI)/include
 
-SRCS := $(wildcard src/pwny/*.c)
-OBJS := $(patsubst %.c, %.o, $(SRCS))
-TARGET = pwny
+CFLAGS = -std=c99
+OBJC_FLAGS = -x objective-c -fobjc-arc
 
-Q = @
+IOS_FRAMEWORKS = -framework Foundation -framework Security -framework AudioToolbox
+IOS_FRAMEWORKS += -framework CoreFoundation -framework MediaPlayer -framework UIKit
+IOS_FRAMEWORKS += -framework AVFoundation -framework CoreLocation
 
-.PHONY: all build pwny clean
+IOS_FRAMEWORKS += -framework SpringBoardServices IOSurface
 
-all: build pwny
+IOS_FLAGS = -arch arm64 -arch arm64e -isysroot $(IOS_SYSROOT)
+IOS_FLAGS += -F $(IOS_SYSROOT)/System/Library/PrivateFrameworks $(IOS_FRAMEWORKS)
 
-setup:
-	$(Q) $(MKDIR) -p $(BUILD)
+pwny_template = src/pwny/main.c
 
-build: setup $(LIBRARY)
+pwny_sources = src/base64.c
+pwny_sources += src/channel.c
+pwny_sources += src/console.c
+pwny_sources += src/json.c
+pwny_sources += src/utils.c
+
+pwny_flags = $(CFLAGS)
+pwny_flags += -I$(INCLUDE) -I$(STDAPI_INCLUDE)
+
+ifeq ($(IOS_TEMPLATE), 1)
+	pwny_sources += $(STDAPI_SRC)/ios_handler.m
+	pwny_sources += $(STDAPI_SRC)/ios_commands.m
+
+	pwny_flags += $(OBJC_FLAGS) $(IOS_FLAGS)
+else ifeq ($(LINUX_TEMPLATE), 1)
+	pwny_sources += $(STDAPI_SRC)/linux_handler.c
+	pwny_sources += $(STDAPI_SRC)/linux_commands.c
+endif
+
+.PHONY: all libpwny pwny clean
 
 clean:
-	$(Q) $(MSG) [Cleaning...]
-	$(Q) $(REMOVE) -rf $(OBJECTS) $(BUILD) $(LIBRARY)
-	$(Q) $(MSG) [Done]
+	rm -rf $(PWNY) $(LIBPWNY)
 
-pwny: $(OBJS)
-	$(Q) $(MSG) [Compiling...]
-	$(Q) $(CC) $(OBJS) -o $(TARGET) -I$(INCLUDE) -L. -lpwny
-	$(Q) $(MSG) [Done]
-
-	$(Q) $(MSG) [Stripping...]
-	$(Q) $(STRIP) $(TARGET)
-	$(Q) $(MSG) [Done]
-
-%.o: %.c
-	$(Q) $(MSG) [Compiling...] $<
-	$(Q) $(CC) -c $< -o $@ $(CFLAGS)
-	$(Q) $(MSG) [Done]
-
-$(LIBRARY): $(OBJECTS)
-	$(Q) $(MSG) [Linking...] $@
-	$(Q) $(AR) rcs $@ $(OBJECTS)
-	$(Q) $(MSG) [Done]
-
-$(BUILD)/%.o: $(SOURCE)/%.c
-	$(Q) $(MSG) [Compiling...] $<
-	$(Q) $(CC) $(CFLAGS) -c $< -o $@
+libpwny:
+	$(CC) $(pwny_flags) $(pwny_sources)
