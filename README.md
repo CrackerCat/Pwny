@@ -44,31 +44,31 @@ from pwny import PwnySession
 * `Pwny` - Pwny utilities, mostly for generating payloads and encoding arguments.
 * `PwnySession` - Wrapper for `HatSploitSession` for Pwny, HatSploit should use it with Pwny payload.
 
-To build payload, you should call `get_payload()`.
+To get Pwny template, you should call `get_template()`.
 
 ```python3
 from pwny import Pwny
 
 pwny = Pwny()
-payload = pwny.get_payload('linux', 'x64')
+template = pwny.get_template('linux', 'x64')
 ```
 
-To encode Pwny command line arguments use `encode_args()`.
+To encode Pwny data (`host` and/or `port`) use `encode_data()`.
 
 ```python3
 from pwny import Pwny
 
 pwny = Pwny()
-args = pwny.encode_args(8888, '127.0.0.1')
+args = pwny.encode_data(host='127.0.0.1', port=8888)
 ```
 
-There are two types of Pwny - `reverse_tcp` and `bind_tcp`. To use `bind_tcp` instead of `reverse_tcp`, you should encode only `port` in `encode_args()`.
+There are two types of Pwny - `reverse_tcp` and `bind_tcp`. To use `bind_tcp` instead of `reverse_tcp`, you should encode only `port` in `encode_data()`.
 
 ```python3
 from pwny import Pwny
 
 pwny = Pwny()
-args = pwny.encode_args(8888)
+args = pwny.encode_data(port=8888)
 ```
 
 ## Adding Pwny payload
@@ -78,12 +78,12 @@ To add Pwny payload to HatSploit you should follow these steps.
 * Write a basic HatSploit payload template.
 * Import `Pwny` and `PwnySession` and put `Pwny` to `HatSploitPayload` class.
 * Set payload parameter `Session` to `PwnySession`.
-* Encode payload options with `encode_args()` and put them to `Args` payload parameter.
-* Return `get_payload()` as a payload return value.
+* Encode data `host` and/or `port` through `encode_data()` and create offset `{'data': encoded_data}`.
+* Return `get_template()` with these offset as a payload return value.
 
-In `get_payload()` you should put your payload platform and architecture.
+In `get_template()` you should put your payload platform and architecture.
 
 ```python3
-return get_payload(self.details['Platform'],
-                   self.details['Architecture'])
+return get_template(self.details['Platform'], self.details['Architecture']),
+       {'data': encoded_data}
 ```
