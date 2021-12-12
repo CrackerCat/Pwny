@@ -31,16 +31,16 @@ from hatsploit.utils.string import StringTools
 
 
 class Pwny(StringTools):
-    pwny = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/resources/'
+    templates = f'{os.path.dirname(os.path.dirname(__file__))}/pwny/templates/'
 
-    def get_payload(self, platform, arch):
-        payload = self.pwny + platform + '/' + arch
+    def get_template(self, platform, arch):
+        payload = self.templates + platform + '/' + arch
 
         if os.path.exists(payload):
             return open(payload, 'rb').read()
         return None
 
-    def encode_args(self, port, host=None):
+    def encode_data(self, port, host=None):
         if not host:
             data = json.dumps({
                 'port': str(port)
