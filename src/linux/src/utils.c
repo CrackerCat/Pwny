@@ -59,12 +59,3 @@ void self_corrupt(char *filename)
 {
     unlink(filename);
 }
-
-void redirect_to_null()
-{
-    int dev_null = open("/dev/null", O_WRONLY);
-
-    dup2(dev_null, 0);
-    dup2(dev_null, 1);
-    dup2(dev_null, 2);
-}
