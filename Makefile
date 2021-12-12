@@ -33,18 +33,15 @@ all: linux apple_ios macos
 
 linux:
 	$(Q) $(MSG) [Building Pwny for Linux...]
-	$(Q) cd $(SRC)/linux
-	$(Q) make all
+	$(Q) cd $(SRC)/linux; make all
 	$(Q) $(MSG) [Done]
 
 apple_ios:
 	$(Q) $(MSG) [Building Pwny for iOS...]
-	$(Q) cd $(SRC)/apple_ios
-	$(Q) make all
+	$(Q) cd $(SRC)/apple_ios; make all
 	$(Q) $(MSG) [Done]
 
 macos:
 	$(Q) $(MSG) [Building Pwny for macOS...]
-	$(Q) cd $(SRC)/macos
-	$(Q) make all
+	$(Q) cd $(SRC)/macos; make all
 	$(Q) $(MSG) [Done]
