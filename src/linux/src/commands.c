@@ -56,6 +56,5 @@ void cmd_attack(__attribute__((unused)) int channel, char *args)
     char *host = find_json(json, "host");
     char *port = find_json(json, "port");
 
-    freeJSONFromMemory(json);
     attack(host, port);
 }
