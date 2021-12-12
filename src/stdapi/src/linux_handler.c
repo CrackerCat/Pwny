@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-#include "commands.h"
+#include "linux_commands.h"
 
 void handle_command(int channel, char *cmd, char *args)
 {
