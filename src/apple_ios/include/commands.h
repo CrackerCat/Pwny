@@ -41,11 +41,7 @@
 @interface Commands : NSObject <AVAudioRecorderDelegate> {
     @public
 
-    NSString *process = @"%bold%blue[*]%end ";
-    NSString *success = @"%bold%green[+]%end ";
-    NSString *error = @"%bold%red[-]%end ";
-    NSString *warning = @"%bold%yellow[!]%end ";
-    NSString *information = @"%bold%white[i]%end ";
+    int channelPipe;
 }
 
 CFArrayRef SBSCopyApplicationDisplayIdentifiers(bool onlyActive, bool debuggable);
@@ -54,6 +50,12 @@ extern int SBSLaunchApplicationWithIdentifier(CFStringRef identifier, Boolean su
 @property(retain) NSFileManager *fileManager;
 @property(retain) Channel *channel;
 @property(retain) UIDevice *thisUIDevice;
+
+NSString *process = @"%bold%blue[*]%end ";
+NSString *success = @"%bold%green[+]%end ";
+NSString *error = @"%bold%red[-]%end ";
+NSString *warning = @"%bold%yellow[!]%end ";
+NSString *information = @"%bold%white[i]%end ";
 
 -(id)init:(int)currentChannelPipe;
 
