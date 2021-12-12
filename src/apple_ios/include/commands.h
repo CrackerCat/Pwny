@@ -57,8 +57,6 @@ NSString *error = @"%bold%red[-]%end ";
 NSString *warning = @"%bold%yellow[!]%end ";
 NSString *information = @"%bold%white[i]%end ";
 
--(id)init:(int)currentChannelPipe;
-
 -(void)cmd_sysinfo;
 -(void)cmd_getpid;
 -(void)cmd_getpaste;
