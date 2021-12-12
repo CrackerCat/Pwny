@@ -51,12 +51,6 @@ extern int SBSLaunchApplicationWithIdentifier(CFStringRef identifier, Boolean su
 @property(retain) Channel *channel;
 @property(retain) UIDevice *thisUIDevice;
 
-NSString *process = @"%bold%blue[*]%end ";
-NSString *success = @"%bold%green[+]%end ";
-NSString *error = @"%bold%red[-]%end ";
-NSString *warning = @"%bold%yellow[!]%end ";
-NSString *information = @"%bold%white[i]%end ";
-
 -(void)cmd_sysinfo;
 -(void)cmd_getpid;
 -(void)cmd_getpaste;
