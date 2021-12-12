@@ -30,9 +30,7 @@
 @synthesize channel;
 @synthesize fileManager;
 
-int channelPipe;
-
--(id)init:(int)currentChannelPipe {
+-(id)init {
     _thisUIDevice = [UIDevice currentDevice];
     [_thisUIDevice setBatteryMonitoringEnabled:YES];
 
@@ -40,7 +38,6 @@ int channelPipe;
     [fileManager changeCurrentDirectoryPath:NSHomeDirectory()];
 
     channel = [[Channel alloc] init];
-    channelPipe = currentChannelPipe;
     return self;
 }
 
