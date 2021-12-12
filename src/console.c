@@ -30,7 +30,7 @@
 
 #include "json.h"
 #include "channel.h"
-#include "commands.h"
+#include "handler.h"
 
 void interact(int channel)
 {
@@ -41,11 +41,9 @@ void interact(int channel)
         char *cmd = find_json(json, "cmd");
         char *args = find_json(json, "args");
 
-        if (strcmp(cmd, "getpid") == 0)
-            cmd_getpid(channel);
-        else if (strcmp(cmd, "attack") == 0)
-            cmd_attack(channel, args);
-        else if (strcmp(cmd, "exit") == 0)
+        if (strcmp(cmd, "exit") == 0)
             break;
+
+        handle_command(cmd, args);
     }
 }
