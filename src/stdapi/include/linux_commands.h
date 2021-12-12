@@ -25,6 +25,6 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-void getpid(int channel);
+void cmd_getpid(int channel);
 
 #endif /* _COMMANDS_H_ */
