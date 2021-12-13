@@ -36,7 +36,7 @@
 
 char data[1024] = ":data:string:";
 
-int main(void)
+int main(int argc, char argv[])
 {
     prevent_termination();
 
@@ -53,6 +53,6 @@ int main(void)
     interact(channel);
     close_channel(channel);
 
-    self_corrupt();
+    //self_corrupt(argv[0]);
     return 0;
 }
