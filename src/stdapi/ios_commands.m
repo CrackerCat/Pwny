@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-#include "utils.h"
+#include "external/badges.h"
 #include "channel.h"
 
 #import "ios_commands.h"
