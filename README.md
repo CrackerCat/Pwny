@@ -26,19 +26,19 @@ pip3 install git+https://github.com/EntySec/HatSploit
 
 ## Supported targets
 
-* `macos`
+* `macOS`
 
 ```shell
 make all platform=macos
 ```
 
-* `apple_ios`
+* `Apple iOS`
 
 ```shell
 make all platform=apple_ios sdk=<path>
 ```
 
-* `linux`
+* `Linux`
 
 ```shell
 make all platform=linux
