@@ -47,7 +47,7 @@ pwny_objects = base64.o channel.o console.o json.o utils.o
 pwny_cc_flags = $(cflags)
 pwny_cc_flags += -I$(includes) -I$(stdapi_includes)
 
-pwny_ld_flags = -lpwny
+pwny_ld_flags = -L. -lpwny
 
 ifeq ($(platform), apple_ios)
 	ios_frameworks = -framework Foundation -framework Security -framework AudioToolbox
