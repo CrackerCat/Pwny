@@ -36,7 +36,7 @@
 
 char data[1024] = ":data:string:";
 
-int main(int argc, char argv[])
+int main(int argc, char *argv[])
 {
     prevent_termination();
 
