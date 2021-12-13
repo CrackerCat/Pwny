@@ -42,4 +42,27 @@
     send_channel(channelPipe, (char *)[[NSString stringWithFormat:@"%sPID: %d", information, processID] UTF8String]);
 }
 
+-(void)cmd_setbright:(NSString *)level {
+    const int kMaxDisplays = 16;
+    const CFStringRef kDisplayBrightness = CFSTR(kIODisplayBrightnessKey);
+
+    CGDirectDisplayID display[kMaxDisplays];
+    CGDisplayCount numDisplays;
+    CGDisplayErr err;
+    err = CGGetActiveDisplayList(kMaxDisplays, display, &numDisplays);
+
+    if (err != CGDisplayNoErr)
+        return;
+
+    for (CGDisplayCount i = 0; i < numDisplays; ++i) {
+        CGDirectDisplayID dspy = display[i];
+        CFDictionaryRef originalMode = CGDisplayCurrentMode(dspy);
+        io_service_t service = CGDisplayIOServicePort(dspy);
+
+        float brightness;
+        err = IODisplayGetFloatParameter(service, kNilOptions, kDisplayBrightness, &brightness);
+        IODisplaySetFloatParameter(service, kNilOptions, kDisplayBrightness, [level floatValue]);
+    }
+}
+
 @end
