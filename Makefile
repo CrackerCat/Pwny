@@ -48,32 +48,33 @@ IOS_FRAMEWORKS += -framework AVFoundation -framework CoreLocation
 
 IOS_FRAMEWORKS += -framework SpringBoardServices IOSurface
 
-IOS_FLAGS = -arch arm64 -arch arm64e -isysroot $(IOS_SYSROOT)
-IOS_FLAGS += -F $(IOS_SYSROOT)/System/Library/PrivateFrameworks $(IOS_FRAMEWORKS)
+IOS_CC_FLAGS = -arch arm64 -arch arm64e -isysroot $(IOS_SYSROOT)
+IOS_LD_FLAGS = -F $(IOS_SYSROOT)/System/Library/PrivateFrameworks $(IOS_FRAMEWORKS)
 
 pwny_template = src/pwny/main.c
 
-pwny_sources = src/base64.c
-pwny_sources += src/channel.c
-pwny_sources += src/console.c
-pwny_sources += src/json.c
-pwny_sources += src/utils.c
+pwny_sources = $(SRC)/base64.c $(SRC)/channel.c $(SRC)/console.c $(SRC)/json.c $(SRC)/utils.c
+pwny_objects = base64.o channel.o console.o json.o utils.o
 
-pwny_flags = $(CFLAGS)
-pwny_flags += -I$(INCLUDE) -I$(STDAPI_INCLUDE)
+pwny_cc_flags = $(CFLAGS)
+pwny_cc_flags += -I$(INCLUDE) -I$(STDAPI_INCLUDE)
+
+pwny_ld_flags = -lpwny
 
 ifeq ($(IOS_TEMPLATE), 1)
 	pwny_sources += $(STDAPI_SRC)/ios_handler.m
 	pwny_sources += $(STDAPI_SRC)/ios_commands.m
 
-	pwny_flags += $(OBJC_FLAGS) $(IOS_FLAGS)
+	pwny_cc_flags += $(OBJC_FLAGS) $(IOS_CC_FLAGS)
+	pwny_ld_flags += $(IOS_LD_FLAGS)
+
+	pwny_objects += ios_hanler ios_commands
 else ifeq ($(LINUX_TEMPLATE), 1)
 	pwny_sources += $(STDAPI_SRC)/linux_handler.c
 	pwny_sources += $(STDAPI_SRC)/linux_commands.c
-endif
 
-pwny_objects = $(patsubst %.c, %.o, $(pwny_sources))
-pwny_objects = $(patsubst %.m, %.o, $(pwny_sources))
+	pwny_objects += linux_handler.o linux_commands.o
+endif
 
 .PHONY: all libpwny pwny clean
 
@@ -81,4 +82,5 @@ clean:
 	rm -rf $(PWNY) $(LIBPWNY)
 
 libpwny:
-	$(CC) $(pwny_flags) $(pwny_sources)
+	$(CC) $(pwny_cc_flags) $(pwny_sources) -c
+	
