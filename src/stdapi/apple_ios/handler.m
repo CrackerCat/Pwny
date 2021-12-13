@@ -24,7 +24,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ios_commands.h"
+#import "apple_ios/commands.h"
 
 void handle_command(int channel, char *cmd, char *args)
 {
