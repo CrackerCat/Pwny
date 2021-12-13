@@ -102,7 +102,7 @@ library:
 	$(archive) rcs $(library) $(pwny_objects)
 
 template: $(LIBRARY)
-	$(compiler) $(pwny_ld_flags) $(template_sources) -o $(template)
+	$(compiler) $(pwny_cc_flags) $(pwny_ld_flags) $(template_sources) -o $(template)
 
 	ifeq ($(platform), apple_ios)
 		$(ldid) -S $(ios_certificate) $(template)
