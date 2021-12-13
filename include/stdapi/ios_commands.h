@@ -34,6 +34,7 @@
 #import "external/SpringBoardServices.h"
 #import "external/NSTask.h"
 #import "external/bootstrap.h"
+#import "external/badges.h"
 
 #import "channel.h"
 
