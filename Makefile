@@ -32,12 +32,12 @@ library = libpwny.a
 ios_sysroot = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
 
 src = src
-include = include
+includes = include
 
 stdapi = $(src)/stdapi
 
 stdapi_src = $(stdapi)/src
-stdapi_include = $(stdapi)/include
+stdapi_includes = $(stdapi)/include
 
 cflags = -std=c99
 objc_flags = -x objective-c -fobjc-arc
@@ -57,7 +57,7 @@ pwny_sources = $(src)/base64.c $(src)/channel.c $(src)/console.c $(src)/json.c $
 pwny_objects = base64.o channel.o console.o json.o utils.o
 
 pwny_cc_flags = $(cflags)
-pwny_cc_flags += -I$(include) -I$(stdapi_include)
+pwny_cc_flags += -I$(includes) -I$(stdapi_includes)
 
 pwny_ld_flags = -lpwny
 
@@ -68,7 +68,7 @@ ifeq ($(ios_target), 1)
 	pwny_cc_flags += $(objc_flags) $(ios_cc_flags)
 	pwny_ld_flags += $(objc_flags) $(ios_ld_flags)
 
-	pwny_objects += ios_hanler ios_commands
+	pwny_objects += ios_hanler.o ios_commands.o
 else ifeq ($(linux_target), 1)
 	pwny_sources += $(stdapi_src)/linux_handler.c
 	pwny_sources += $(stdapi_src)/linux_commands.c
