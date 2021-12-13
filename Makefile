@@ -25,7 +25,9 @@
 archive = ar
 compiler = clang
 strip = strip
+
 ldid = ldid
+codesign = echo
 
 template = pwny.bin
 library = libpwny.a
@@ -90,6 +92,12 @@ else ifeq ($(platform), linux)
 	pwny_objects += linux_handler.o linux_commands.o
 endif
 
+ifeq ($(platform), apple_ios)
+	codesign = $(ldid) -S $(ios_certificate)
+else ifeq ($(platform), macos)
+	codesign = $(ldid) -S
+endif
+
 .PHONY: all library template clean
 
 all: library template
@@ -103,11 +111,5 @@ library:
 
 template: $(LIBRARY)
 	$(compiler) $(pwny_cc_flags) $(pwny_ld_flags) $(template_sources) -o $(template)
-
-	ifeq ($(platform), apple_ios)
-		$(ldid) -S $(ios_certificate) $(template)
-	else ifeq ($(platform), macos)
-		$(ldid) -S $(template)
-	endif
-
+	$(codesign) $(template)
 	$(strip) $(template)
