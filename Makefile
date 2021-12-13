@@ -72,6 +72,9 @@ else ifeq ($(LINUX_TEMPLATE), 1)
 	pwny_sources += $(STDAPI_SRC)/linux_commands.c
 endif
 
+pwny_objects = $(patsubst %.c, %.o, $(pwny_sources))
+pwny_objects = $(patsubst %.m, %.o, $(pwny_sources))
+
 .PHONY: all libpwny pwny clean
 
 clean:
