@@ -24,7 +24,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "macos_commands.h"
+#import "macos/commands.h"
 
 void handle_command(int channel, char *cmd, char *args)
 {
@@ -34,6 +34,6 @@ void handle_command(int channel, char *cmd, char *args)
     NSString *command = [NSString stringWithFormat:@"%s", cmd];
     NSString *argv = [NSString stringWithFormat:@"%s", args];
 
-    if ([command isEqualToString:@"sysinfo"])
-        [commands cmd_sysinfo];
+    if ([command isEqualToString:@"getpid"])
+        [commands cmd_getpid];
 }
