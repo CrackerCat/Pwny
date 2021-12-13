@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-#import "macos_commands.h"
+#import "macos/commands.h"
 
 @implementation Commands
 
