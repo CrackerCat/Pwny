@@ -62,7 +62,7 @@ ifeq ($(platform), apple_ios)
 	ios_ld_flags = -F $(sdk)/System/Library/Frameworks
 	ios_ld_flags += -F $(sdk)/System/Library/PrivateFrameworks $(ios_frameworks)
 
-	ios_certificate = external/sign.plist
+	ios_certificate = deps/sign.plist
 else ifeq ($(platform), macos)
 	macos_frameworks = -framework Foundation
 
@@ -94,8 +94,6 @@ endif
 
 ifeq ($(platform), apple_ios)
 	codesign = $(ldid) -S $(ios_certificate)
-else ifeq ($(platform), macos)
-	codesign = $(ldid) -S
 endif
 
 .PHONY: all library template clean
