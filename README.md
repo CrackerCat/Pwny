@@ -89,6 +89,6 @@ To add Pwny payload to HatSploit you should follow these steps.
 In `get_template()` you should put your payload platform and architecture.
 
 ```python3
-return get_template(self.details['Platform'], self.details['Architecture']),
+return self.get_template(self.details['Platform'], self.details['Architecture']),
        {'data': encoded_data}
 ```
