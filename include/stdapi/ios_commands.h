@@ -31,8 +31,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-#import <SpringBoardServices/SpringBoardServices.h>
-
+#import "external/SpringBoardHeaders.h"
 #import "external/NSTask.h"
 #import "external/bootstrap.h"
 
