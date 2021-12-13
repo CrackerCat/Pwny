@@ -44,6 +44,6 @@
 @property (nonatomic, retain) AVAudioRecorder *audioRecorder;
 @property NSTask *systask;
 
--(void)cmd_sysinfo;
+-(void)cmd_getpid;
 
 @end
