@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-#import "commands.h"
+#import "ios_commands.h"
 
 @implementation Commands
 
