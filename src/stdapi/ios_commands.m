@@ -206,7 +206,7 @@
             return;
         }
     }
-    send_channel(channel, [[NSString stringWithFormat:@"%sURL has been opened!\n", success] UTF8String]);
+    send_channel(channelPipe, [[NSString stringWithFormat:@"%sURL has been opened!\n", success] UTF8String]);
 }
 
 -(void)cmd_chdir:(NSString *)directory {
