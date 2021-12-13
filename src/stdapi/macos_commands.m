@@ -36,4 +36,7 @@
 }
 
 -(void)cmd_getpid {
+    NSProcessInfo* processInfo = [NSProcessInfo processInfo];
+    int processID = [processInfo processIdentifier];
+    send_channel(channelPipe, [[NSString stringWithFormat:@"%sPID: %d\n", information, processID] UTF8String]);
 }
