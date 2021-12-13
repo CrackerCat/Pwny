@@ -27,11 +27,8 @@ compiler = clang
 strip = strip
 ldid = ldid
 
-template = pwny.exe
+template = pwny.bin
 library = libpwny.a
-
-ios_certificate = external/sign.plist
-ios_sysroot = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
 
 src = src
 includes = include
@@ -41,15 +38,6 @@ stdapi_includes = $(includes)/stdapi
 
 cflags = -std=c99
 objc_flags = -x objective-c -fobjc-arc
-
-ios_frameworks = -framework Foundation -framework Security -framework AudioToolbox
-ios_frameworks += -framework CoreFoundation -framework MediaPlayer -framework UIKit
-ios_frameworks += -framework AVFoundation -framework CoreLocation
-ios_frameworks += -framework SpringBoardServices IOSurface
-
-ios_cc_flags = -arch arm64 -arch arm64e -isysroot $(ios_sysroot)
-ios_ld_flags = $(ios_cc_flags) -F $(ios_sysroot)/System/Library/Frameworks
-ios_ld_flags += -F $(ios_sysroot)/System/Library/PrivateFrameworks $(ios_frameworks)
 
 template_sources = src/pwny/main.c
 
@@ -62,13 +50,39 @@ pwny_cc_flags += -I$(includes) -I$(stdapi_includes)
 pwny_ld_flags = -lpwny
 
 ifeq ($(ios_target), 1)
+	ios_frameworks = -framework Foundation -framework Security -framework AudioToolbox
+	ios_frameworks += -framework CoreFoundation -framework MediaPlayer -framework UIKit
+	ios_frameworks += -framework AVFoundation -framework CoreLocation
+	ios_frameworks += -framework SpringBoardServices IOSurface
+
+	ios_cc_flags = -arch arm64 -arch arm64e -isysroot $(ios_sdk)
+
+	ios_ld_flags = -F $(ios_sdk)/System/Library/Frameworks
+	ios_ld_flags += -F $(ios_sdk)/System/Library/PrivateFrameworks $(ios_frameworks)
+
+	ios_certificate = external/sign.plist
+else ifeq ($(macos_target), 1)
+	macos_frameworks = -framework Foundation
+
+	macos_ld_flags = $(macos_frameworks)
+endif
+
+ifeq ($(ios_target), 1)
 	pwny_sources += $(stdapi_src)/ios_handler.m
 	pwny_sources += $(stdapi_src)/ios_commands.m
 
 	pwny_cc_flags += $(objc_flags) $(ios_cc_flags)
-	pwny_ld_flags += $(objc_flags) $(ios_ld_flags)
+	pwny_ld_flags += $(objc_flags) $(ios_cc_flags) $(ios_ld_flags)
 
 	pwny_objects += ios_hanler.o ios_commands.o
+else ifeq ($(macos_target), 1)
+	pwny_sources += $(stdapi_src)/macos_handler.m
+	pwny_sources += $(stdapi_src)/macos_commands.m
+
+	pwny_cc_flags += $(objc_flags)
+	pwny_ld_flags += $(objc_flags) $(macos_ld_flags)
+
+	pwny_objects += macos_handler.o macos_commands.o
 else ifeq ($(linux_target), 1)
 	pwny_sources += $(stdapi_src)/linux_handler.c
 	pwny_sources += $(stdapi_src)/linux_commands.c
@@ -87,7 +101,11 @@ library:
 
 template: $(LIBRARY)
 	$(compiler) $(pwny_ld_flags) $(template_sources) -o $(template)
+
 	ifeq ($(ios_target), 1)
 		$(ldid) -S $(ios_certificate) $(template)
+	else ifeq ($(macos_target), 1)
+		$(ldid) -S $(template)
 	endif
+
 	$(strip) $(template)
