@@ -22,65 +22,68 @@
 # SOFTWARE.
 #
 
-AR = ar
-CC = clang
-STRIP = strip
+archive = ar
+compiler = clang
+strip = strip
 
-PWNY = pwny
-LIBPWNY = libpwny.a
+template = pwny
+library = libpwny.a
 
-IOS_SYSROOT = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
+ios_sysroot = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
 
-SRC = src
-INCLUDE = include
+src = src
+include = include
 
-STDAPI = $(SRC)/stdapi
+stdapi = $(src)/stdapi
 
-STDAPI_SRC = $(STDAPI)/src
-STDAPI_INCLUDE = $(STDAPI)/include
+stdapi_src = $(stdapi)/src
+stdapi_include = $(stdapi)/include
 
-CFLAGS = -std=c99
-OBJC_FLAGS = -x objective-c -fobjc-arc
+cflags = -std=c99
+objc_flags = -x objective-c -fobjc-arc
 
-IOS_FRAMEWORKS = -framework Foundation -framework Security -framework AudioToolbox
-IOS_FRAMEWORKS += -framework CoreFoundation -framework MediaPlayer -framework UIKit
-IOS_FRAMEWORKS += -framework AVFoundation -framework CoreLocation
+ios_frameworks = -framework Foundation -framework Security -framework AudioToolbox
+ios_frameworks += -framework CoreFoundation -framework MediaPlayer -framework UIKit
+ios_frameworks += -framework AVFoundation -framework CoreLocation
+ios_frameworks += -framework SpringBoardServices IOSurface
 
-IOS_FRAMEWORKS += -framework SpringBoardServices IOSurface
+ios_cc_flags = -arch arm64 -arch arm64e -isysroot $(ios_sysroot)
+ios_ld_flags = $(ios_cc_flags) -F $(ios_sysroot)/System/Library/Frameworks
+ios_ld_flags += -F $(ios_sysroot)/System/Library/PrivateFrameworks $(ios_frameworks)
 
-IOS_CC_FLAGS = -arch arm64 -arch arm64e -isysroot $(IOS_SYSROOT)
-IOS_LD_FLAGS = -F $(IOS_SYSROOT)/System/Library/PrivateFrameworks $(IOS_FRAMEWORKS)
+template_sources = src/pwny/main.c
 
-pwny_template = src/pwny/main.c
-
-pwny_sources = $(SRC)/base64.c $(SRC)/channel.c $(SRC)/console.c $(SRC)/json.c $(SRC)/utils.c
+pwny_sources = $(src)/base64.c $(src)/channel.c $(src)/console.c $(src)/json.c $(src)/utils.c
 pwny_objects = base64.o channel.o console.o json.o utils.o
 
-pwny_cc_flags = $(CFLAGS)
-pwny_cc_flags += -I$(INCLUDE) -I$(STDAPI_INCLUDE)
+pwny_cc_flags = $(cflags)
+pwny_cc_flags += -I$(include) -I$(stdapi_include)
 
 pwny_ld_flags = -lpwny
 
-ifeq ($(IOS_TEMPLATE), 1)
-	pwny_sources += $(STDAPI_SRC)/ios_handler.m
-	pwny_sources += $(STDAPI_SRC)/ios_commands.m
+ifeq ($(ios_target), 1)
+	pwny_sources += $(stdapi_src)/ios_handler.m
+	pwny_sources += $(stdapi_src)/ios_commands.m
 
-	pwny_cc_flags += $(OBJC_FLAGS) $(IOS_CC_FLAGS)
-	pwny_ld_flags += $(IOS_LD_FLAGS)
+	pwny_cc_flags += $(objc_flags) $(ios_cc_flags)
+	pwny_ld_flags += $(objc_flags) $(ios_ld_flags)
 
 	pwny_objects += ios_hanler ios_commands
-else ifeq ($(LINUX_TEMPLATE), 1)
-	pwny_sources += $(STDAPI_SRC)/linux_handler.c
-	pwny_sources += $(STDAPI_SRC)/linux_commands.c
+else ifeq ($(linux_target), 1)
+	pwny_sources += $(stdapi_src)/linux_handler.c
+	pwny_sources += $(stdapi_src)/linux_commands.c
 
 	pwny_objects += linux_handler.o linux_commands.o
 endif
 
-.PHONY: all libpwny pwny clean
+.PHONY: all library template clean
 
 clean:
-	rm -rf $(PWNY) $(LIBPWNY)
+	rm -rf $(pwny_objects) $(pwny) $(libpwny)
 
-libpwny:
-	$(CC) $(pwny_cc_flags) $(pwny_sources) -c
-	
+library:
+	$(compiler) $(pwny_cc_flags) $(pwny_sources) -c
+	$(archive) rcs $(library) $(pwny_objects)
+
+template:
+	$(compiler) $(pwny_ld_flags) $(template_sources) -o $(template)
