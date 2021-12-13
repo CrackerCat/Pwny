@@ -34,10 +34,8 @@ ios_sysroot = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
 src = src
 includes = include
 
-stdapi = $(src)/stdapi
-
-stdapi_src = $(stdapi)/src
-stdapi_includes = $(stdapi)/include
+stdapi_src = $(src)/stdapi
+stdapi_includes = $(includes)/stdapi
 
 cflags = -std=c99
 objc_flags = -x objective-c -fobjc-arc
