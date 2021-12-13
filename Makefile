@@ -42,9 +42,10 @@ cflags = -std=c99
 objc_flags = -x objective-c -fobjc-arc
 
 template_sources = src/pwny/main.c
-
 pwny_sources = $(src)/base64.c $(src)/channel.c $(src)/console.c $(src)/json.c $(src)/utils.c
+
 pwny_objects = base64.o channel.o console.o json.o utils.o
+pwny_objects += commands.o handler.o
 
 pwny_cc_flags = $(cflags)
 pwny_cc_flags += -I$(includes) -I$(stdapi_includes)
@@ -64,32 +65,27 @@ ifeq ($(platform), apple_ios)
 
 	ios_certificate = deps/sign.plist
 else ifeq ($(platform), macos)
-	macos_frameworks = -framework Foundation
+	macos_frameworks = -framework Foundation -framework AVFoundation -framework AudioToolbox
+	macos_frameworks += -framework Appkit
 
 	macos_ld_flags = $(macos_frameworks)
 endif
 
 ifeq ($(platform), apple_ios)
-	pwny_sources += $(stdapi_src)/ios_handler.m
-	pwny_sources += $(stdapi_src)/ios_commands.m
+	pwny_sources += $(stdapi_src)/apple_ios/handler.m
+	pwny_sources += $(stdapi_src)/apple_ios/commands.m
 
 	pwny_cc_flags += $(objc_flags) $(ios_cc_flags)
 	pwny_ld_flags += $(objc_flags) $(ios_cc_flags) $(ios_ld_flags)
-
-	pwny_objects += ios_hanler.o ios_commands.o
 else ifeq ($(platform), macos)
-	pwny_sources += $(stdapi_src)/macos_handler.m
-	pwny_sources += $(stdapi_src)/macos_commands.m
+	pwny_sources += $(stdapi_src)/macos/handler.m
+	pwny_sources += $(stdapi_src)/macos/commands.m
 
 	pwny_cc_flags += $(objc_flags)
 	pwny_ld_flags += $(objc_flags) $(macos_ld_flags)
-
-	pwny_objects += macos_handler.o macos_commands.o
 else ifeq ($(platform), linux)
-	pwny_sources += $(stdapi_src)/linux_handler.c
-	pwny_sources += $(stdapi_src)/linux_commands.c
-
-	pwny_objects += linux_handler.o linux_commands.o
+	pwny_sources += $(stdapi_src)/linux/handler.c
+	pwny_sources += $(stdapi_src)/linux/commands.c
 endif
 
 ifeq ($(platform), apple_ios)
