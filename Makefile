@@ -85,7 +85,7 @@ library:
 	$(compiler) $(pwny_cc_flags) $(pwny_sources) -c
 	$(archive) rcs $(library) $(pwny_objects)
 
-template:
+template: $(LIBRARY)
 	$(compiler) $(pwny_ld_flags) $(template_sources) -o $(template)
 	ifeq ($(ios_target), 1)
 		$(ldid) -S $(ios_certificate) $(template)
