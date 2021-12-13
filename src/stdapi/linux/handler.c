@@ -24,7 +24,7 @@
 
 #include <string.h>
 
-#include "linux_commands.h"
+#include "linux/commands.h"
 
 void handle_command(int channel, char *cmd, char *args)
 {
