@@ -27,7 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "utils.h"
+#include "external/badges.h"
 #include "channel.h"
 
 void cmd_getpid(int channel)
