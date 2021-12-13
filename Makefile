@@ -49,25 +49,25 @@ pwny_cc_flags += -I$(includes) -I$(stdapi_includes)
 
 pwny_ld_flags = -lpwny
 
-ifeq ($(ios_target), 1)
+ifeq ($(platform), apple_ios)
 	ios_frameworks = -framework Foundation -framework Security -framework AudioToolbox
 	ios_frameworks += -framework CoreFoundation -framework MediaPlayer -framework UIKit
 	ios_frameworks += -framework AVFoundation -framework CoreLocation
 	ios_frameworks += -framework SpringBoardServices IOSurface
 
-	ios_cc_flags = -arch arm64 -arch arm64e -isysroot $(ios_sdk)
+	ios_cc_flags = -arch arm64 -arch arm64e -isysroot $(sdk)
 
-	ios_ld_flags = -F $(ios_sdk)/System/Library/Frameworks
-	ios_ld_flags += -F $(ios_sdk)/System/Library/PrivateFrameworks $(ios_frameworks)
+	ios_ld_flags = -F $(sdk)/System/Library/Frameworks
+	ios_ld_flags += -F $(sdk)/System/Library/PrivateFrameworks $(ios_frameworks)
 
 	ios_certificate = external/sign.plist
-else ifeq ($(macos_target), 1)
+else ifeq ($(platform), macos)
 	macos_frameworks = -framework Foundation
 
 	macos_ld_flags = $(macos_frameworks)
 endif
 
-ifeq ($(ios_target), 1)
+ifeq ($(platform), apple_ios)
 	pwny_sources += $(stdapi_src)/ios_handler.m
 	pwny_sources += $(stdapi_src)/ios_commands.m
 
@@ -75,7 +75,7 @@ ifeq ($(ios_target), 1)
 	pwny_ld_flags += $(objc_flags) $(ios_cc_flags) $(ios_ld_flags)
 
 	pwny_objects += ios_hanler.o ios_commands.o
-else ifeq ($(macos_target), 1)
+else ifeq ($(platform), macos)
 	pwny_sources += $(stdapi_src)/macos_handler.m
 	pwny_sources += $(stdapi_src)/macos_commands.m
 
@@ -83,7 +83,7 @@ else ifeq ($(macos_target), 1)
 	pwny_ld_flags += $(objc_flags) $(macos_ld_flags)
 
 	pwny_objects += macos_handler.o macos_commands.o
-else ifeq ($(linux_target), 1)
+else ifeq ($(platform), linux)
 	pwny_sources += $(stdapi_src)/linux_handler.c
 	pwny_sources += $(stdapi_src)/linux_commands.c
 
@@ -102,9 +102,9 @@ library:
 template: $(LIBRARY)
 	$(compiler) $(pwny_ld_flags) $(template_sources) -o $(template)
 
-	ifeq ($(ios_target), 1)
+	ifeq ($(platform), apple_ios)
 		$(ldid) -S $(ios_certificate) $(template)
-	else ifeq ($(macos_target), 1)
+	else ifeq ($(platform), macos)
 		$(ldid) -S $(template)
 	endif
 
