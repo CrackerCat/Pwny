@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+#import "external/badges.h"
 #import "macos/commands.h"
 
 @implementation Commands
