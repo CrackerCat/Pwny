@@ -25,10 +25,12 @@
 archive = ar
 compiler = clang
 strip = strip
+ldid = ldid
 
 template = pwny.exe
 library = libpwny.a
 
+ios_certificate = external/sign.plist
 ios_sysroot = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
 
 src = src
@@ -85,3 +87,7 @@ library:
 
 template:
 	$(compiler) $(pwny_ld_flags) $(template_sources) -o $(template)
+	ifeq ($(ios_target), 1)
+		$(ldid) -S $(ios_certificate) $(template)
+	endif
+	$(strip) $(template)
