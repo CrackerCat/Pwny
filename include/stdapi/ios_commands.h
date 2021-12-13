@@ -48,7 +48,6 @@ CFArrayRef SBSCopyApplicationDisplayIdentifiers(bool onlyActive, bool debuggable
 extern int SBSLaunchApplicationWithIdentifier(CFStringRef identifier, Boolean suspended);
 
 @property(retain) NSFileManager *fileManager;
-@property(retain) Channel *channel;
 @property(retain) UIDevice *thisUIDevice;
 
 -(void)cmd_sysinfo;
