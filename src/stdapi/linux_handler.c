@@ -28,6 +28,6 @@
 
 void handle_command(int channel, char *cmd, char *args)
 {
-    if (strcmp(cmd, "getpid"))
+    if (strcmp(cmd, "getpid") == 0)
         cmd_getpid(channel);
 }
