@@ -26,16 +26,25 @@ pip3 install git+https://github.com/EntySec/HatSploit
 
 ## Supported targets
 
-* `macos/x64`
-* `apple_ios/aarch64`
-* `linux/x64`
-* `linux/x86`
-* `linux/armle`
-* `linux/aarch64`
-* `linux/mipsle`
-* `linux/mipsbe`
+* `macos`
 
-**NOTE:** Pwny Makefile does not contain cross-compiler!
+```shell
+make all platform=macos
+```
+
+* `apple_ios`
+
+```shell
+make all platform=apple_ios sdk=<path>
+```
+
+* `linux`
+
+```shell
+make all platform=linux
+```
+
+**NOTE:** To compile for target `macos` you will need `XCode` to be installed and to compile for `apple_ios` target you will need to download patched SDKs from [here](https://github.com/theos/sdks).
 
 ## Basic usage
 
