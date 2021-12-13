@@ -28,8 +28,6 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <Appkit/Appkit.h>
 
-#import "external/badges.h"
-
 #import "channel.h"
 
 @interface Commands : NSObject <AVAudioRecorderDelegate> {
