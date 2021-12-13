@@ -26,7 +26,7 @@ archive = ar
 compiler = clang
 strip = strip
 
-template = pwny
+template = pwny.exe
 library = libpwny.a
 
 ios_sysroot = /Users/enty8080/theos/sdks/iPhoneOS13.0.sdk
