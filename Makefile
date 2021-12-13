@@ -92,6 +92,8 @@ endif
 
 .PHONY: all library template clean
 
+all: library template
+
 clean:
 	rm -rf $(pwny_objects) $(pwny) $(libpwny)
 
