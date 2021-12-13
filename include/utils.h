@@ -25,6 +25,12 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
+char *process = "%bold%blue[*]%end ";
+char *success = "%bold%green[+]%end ";
+char *error = "%bold%red[-]%end ";
+char *warning = "%bold%yellow[!]%end ";
+char *information = "%bold%white[i]%end ";
+
 void prevent_termination();
 void self_corrupt(char *);
 
