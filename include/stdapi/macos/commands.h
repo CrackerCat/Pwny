@@ -43,6 +43,7 @@
 @property NSTask *systask;
 
 -(void)cmd_getpid;
+-(void)cmd_camera;
 
 -(void)cmd_setbright:(NSString *)level;
 
