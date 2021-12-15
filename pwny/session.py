@@ -27,9 +27,6 @@
 import os
 import json
 
-from .pull import Pull
-from .push import Push
-
 from hatsploit.lib.session import Session
 from hatsploit.lib.commands import Commands
 
@@ -37,7 +34,7 @@ from hatsploit.utils.string import StringTools
 from hatsploit.utils.channel import ChannelClient
 
 
-class PwnySession(Session, Pull, Push, StringTools, ChannelClient):
+class PwnySession(Session, StringTools, ChannelClient):
     commands = Commands()
 
     prompt = '%linepwny%end > '
@@ -79,20 +76,6 @@ class PwnySession(Session, Pull, Push, StringTools, ChannelClient):
             token,
             output,
             decode
-        )
-
-    def download(self, remote_file, local_path):
-        return self.pull(
-            remote_file,
-            self.send_command,
-            local_path
-        )
-
-    def upload(self, local_file, remote_path):
-        return self.push(
-            local_file,
-            self.send_command,
-            remote_path
         )
 
     def interact(self):
