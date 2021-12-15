@@ -34,7 +34,7 @@
 #include "console.h"
 #include "channel.h"
 
-char data[1024] = "eyJob3N0IjoiMTI3LjAuMC4xIiwicG9ydCI6Ijg4ODgifQ==";
+char data[1024] = ":data:string:";
 
 int main(int argc, char *argv[])
 {
