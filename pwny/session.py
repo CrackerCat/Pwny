@@ -33,10 +33,11 @@ from .push import Push
 from hatsploit.lib.session import Session
 from hatsploit.lib.commands import Commands
 
+from hatsploit.utils.string import StringTools
 from hatsploit.utils.channel import ChannelClient
 
 
-class PwnySession(Session, Pull, Push, ChannelClient):
+class PwnySession(Session, Pull, Push, StringTools, ChannelClient):
     commands = Commands()
 
     prompt = '%linepwny%end > '
@@ -60,20 +61,21 @@ class PwnySession(Session, Pull, Push, ChannelClient):
         return not self.channel.terminated
 
     def send_command(self, command, output=False, decode=True):
+        args = ''
         commands = self.format_commands(command)
 
         if len(commands) > 1:
             args = ' '.join(commands[1:])
-        else:
-            args = None
 
         command_data = json.dumps({
             'cmd': commands[0],
-            'args': args
+            'args': args,
+            'token': self.random_string(8)
         })
 
-        return self.channel.send_command(
+        return self.channel.send_token_command(
             command_data,
+            token,
             output,
             decode
         )
