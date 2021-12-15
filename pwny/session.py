@@ -62,6 +62,7 @@ class PwnySession(Session, Pull, Push, StringTools, ChannelClient):
 
     def send_command(self, command, output=False, decode=True):
         args = ''
+        token = self.random_string(8)
         commands = self.format_commands(command)
 
         if len(commands) > 1:
@@ -70,7 +71,7 @@ class PwnySession(Session, Pull, Push, StringTools, ChannelClient):
         command_data = json.dumps({
             'cmd': commands[0],
             'args': args,
-            'token': self.random_string(8)
+            'token': token
         })
 
         return self.channel.send_token_command(
