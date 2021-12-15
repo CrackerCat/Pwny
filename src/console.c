@@ -41,9 +41,12 @@ void interact(int channel)
         char *cmd = find_json(json, "cmd");
         char *args = find_json(json, "args");
 
+        char *token = find_json(json, "token");
+
         if (strcmp(cmd, "exit") == 0)
             break;
 
         handle_command(channel, cmd, args);
+        send_channel(channel, token);
     }
 }
