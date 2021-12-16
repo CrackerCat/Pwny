@@ -37,7 +37,7 @@
 }
 
 @property NSFileManager *fileManager;
-@property (readwrite, retain) AVCapturePhotoOutput *stillImageOutput;
+@property (readwrite, retain) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, retain) AVAudioRecorder *audioRecorder;
 @property NSTask *systask;
