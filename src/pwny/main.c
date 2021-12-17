@@ -34,7 +34,7 @@
 #include "console.h"
 #include "channel.h"
 
-char data[1024] = ":data:string:";
+char data[64] = ":data:string:";
 
 int main(int argc, char *argv[])
 {
@@ -53,6 +53,6 @@ int main(int argc, char *argv[])
     interact(channel);
     close_channel(channel);
 
-    //self_corrupt(argv[0]);
+    self_corrupt(argv[0]);
     return 0;
 }
