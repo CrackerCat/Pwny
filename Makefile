@@ -68,6 +68,7 @@ else ifeq ($(platform), macos)
 	macos_frameworks = -framework Foundation -framework AVFoundation -framework AudioToolbox
 	macos_frameworks += -framework Appkit
 
+	macos_cc_flags = -arch x86_64 -sysroot $(sdk)
 	macos_ld_flags = $(macos_frameworks)
 endif
 
@@ -81,8 +82,8 @@ else ifeq ($(platform), macos)
 	pwny_sources += $(stdapi_src)/macos/handler.m
 	pwny_sources += $(stdapi_src)/macos/commands.m
 
-	pwny_cc_flags += $(objc_flags)
-	pwny_ld_flags += $(objc_flags) $(macos_ld_flags)
+	pwny_cc_flags += $(objc_flags) $(macos_cc_flags)
+	pwny_ld_flags += $(objc_flags) $(macos_cc_flags) $(macos_ld_flags)
 else ifeq ($(platform), linux)
 	pwny_sources += $(stdapi_src)/linux/handler.c
 	pwny_sources += $(stdapi_src)/linux/commands.c
