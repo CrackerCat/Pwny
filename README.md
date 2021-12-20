@@ -44,7 +44,7 @@ make all platform=apple_ios sdk=<path>
 make all platform=linux
 ```
 
-**NOTE:** To compile for target `macos` you will need `XCode` to be installed and to compile for `apple_ios` target you will need to download patched SDKs from [here](https://github.com/theos/sdks).
+**NOTE:** To compile for target `macos` you will need to download patched SDKs from [here](https://github.com/phracker/MacOSX-SDKs) and to compile for `apple_ios` target you will need to download patched SDKs from [here](https://github.com/theos/sdks).
 
 ## Basic usage
 
