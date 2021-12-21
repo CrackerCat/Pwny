@@ -45,6 +45,7 @@ class PwnySession(Session, StringTools, ChannelClient):
     details = {
         'Post': "",
         'Platform': "",
+        'Architecture': "",
         'Type': "pwny"
     }
 
