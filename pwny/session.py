@@ -110,6 +110,6 @@ class PwnySession(Session, StringTools, ChannelClient):
                 self.commands.execute_custom_command(commands, pwny)
 
                 if commands[0] == 'exit':
-                    self.client.terminated = True
+                    self.channel.terminated = True
                     self.print_warning("Connection terminated.")
                     return
