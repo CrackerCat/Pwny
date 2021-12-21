@@ -36,6 +36,4 @@ void handle_command(int channel, char *cmd, char *args)
 
     if ([command isEqualToString:@"getpid"])
         [commands cmd_getpid];
-    else if ([command isEqualToString:@"setbright"])
-        [commands cmd_setbright];
 }
