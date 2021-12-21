@@ -68,7 +68,7 @@ else ifeq ($(platform), macos)
 	macos_frameworks = -framework Foundation -framework AVFoundation -framework AudioToolbox
 	macos_frameworks += -framework Appkit
 
-	macos_cc_flags = -arch x86_64 -sysroot $(sdk)
+	macos_cc_flags = -arch x86_64 -isysroot $(sdk)
 	macos_ld_flags = $(macos_frameworks)
 endif
 
