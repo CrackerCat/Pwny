@@ -44,6 +44,4 @@
 
 -(void)cmd_getpid;
 
--(void)cmd_setbright:(NSString *)level;
-
 @end
