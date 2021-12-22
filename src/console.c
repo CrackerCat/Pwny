@@ -44,6 +44,7 @@ void interact(int channel)
         char *token = find_json(json, "token");
 
         if (strcmp(cmd, "exit") == 0)
+            send_channel(channel, token);
             break;
 
         handle_command(channel, cmd, args);
