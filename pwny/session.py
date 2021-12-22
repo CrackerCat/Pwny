@@ -84,6 +84,7 @@ class PwnySession(Session, StringTools, ChannelClient):
 
         if self.channel.terminated:
             self.print_warning("Connection terminated.")
+            self.close()
             return
 
         self.print_process("Loading Pwny commands...")
@@ -104,6 +105,12 @@ class PwnySession(Session, StringTools, ChannelClient):
                     break
 
                 elif commands[0] == 'help':
+                    self.print_table("Core Commands", ('Command', 'Description'), *[
+                        ('exit', 'Terminate Pwny session.'),
+                        ('help', 'Show available commands.'),
+                        ('quit', 'Stop interaction.')
+                    ])
+
                     self.commands.show_commands(pwny)
                     continue
 
@@ -113,7 +120,8 @@ class PwnySession(Session, StringTools, ChannelClient):
 
             if self.channel.terminated:
                 self.print_warning("Connection terminated.")
-                return
+                self.close()
+                break
 
             if commands:
                 self.commands.execute_custom_command(commands, pwny)
